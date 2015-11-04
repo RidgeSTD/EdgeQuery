@@ -1,6 +1,7 @@
 __author__ = 'alex'
 
-from data_structure import tree_node as tnode
+from common import TreeNode
+
 
 def build_in_out_table(l_in, l_out, l_in_menu, l_out_menu):
     in_table = {}
@@ -17,13 +18,13 @@ def build_in_out_table(l_in, l_out, l_in_menu, l_out_menu):
 
 
 def build_tree(table, menu):
-    root = tnode(data=[])
+    root = TreeNode(data=[])
     for node in table:
         pin = root
         for label in menu[node]:
             for i in range(0, table[node][label]):
                 if label not in pin.children:
-                    child = tnode(data=[])
+                    child = TreeNode(data=[])
                     pin.add_child(label, child)
                     pin = child
                 else:
