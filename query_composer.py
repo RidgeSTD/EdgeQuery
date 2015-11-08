@@ -46,8 +46,8 @@ def compose_query(file_name=None):
     has_more_query = True
     while has_more_query:
         queries.append([])
-        in_set = {}
-        out_set = {}
+        q_in = {}
+        q_out = {}
         flaged = set()
         degree = {}
         e_counter = 0
@@ -77,23 +77,51 @@ def compose_query(file_name=None):
                 degree[des] = DegreeTuple(in_degree=1, out_degree=0)
 
             try:
-                in_set[des].append((edg, ori))
+                q_in[des].append((edg, ori))
             except KeyError:
-                in_set[des] = []
-                in_set[des].append((edg, ori))
+                q_in[des] = []
+                q_in[des].append((edg, ori))
 
             try:
-                out_set[ori].append((edg, des))
+                q_out[ori].append((edg, des))
             except KeyError:
-                out_set[ori] = []
-                out_set[ori].append((edg, des))
+                q_out[ori] = []
+                q_out[ori].append((edg, des))
 
         while e_counter > 0:
             head = __find_head(degree=degree, flaged=flaged)
             m_twig = Twig(head=head)
-            m_twig.in_edge, m_twig.out_edge = __build_twig_prune_query(head=head, in_set=in_set, out_set=out_set, flaged=flaged, degree=degree)
+            m_twig.in_edge, m_twig.out_edge = __build_twig_prune_query(head=head, in_set=q_in, out_set=q_out, flaged=flaged, degree=degree)
             flaged.add(head)
             e_counter -= (len(m_twig.in_edge) + len(m_twig.out_edge))
             queries[q_counter].append(m_twig)
 
-    return queries
+    q_in_menu = {}
+    for node in q_in:
+        q_in_menu_counter = {}
+        q_in_menu[node] = []
+        for label, ori in q_in[node]:
+            if label not in q_in_menu_counter:
+                q_in_menu_counter[label] = 1
+            else:
+                q_in_menu_counter[label] += 1
+    # 这里与degree的统计信息重复了!
+        for label in q_in_menu_counter:
+            q_in_menu[node].append((label, q_in_menu_counter[label]))
+        q_in_menu[node].sort(key=lambda x: x[0])
+
+    q_out_menu = {}
+    for node in q_out:
+        q_out_menu_counter = {}
+        q_out_menu[node] = []
+        for label, ori in q_out[node]:
+            if label not in q_out_menu_counter:
+                q_out_menu_counter[label] = 1
+            else:
+                q_out_menu_counter[label] += 1
+    # 这里与degree的统计信息重复了!
+        for label in q_out_menu_counter:
+            q_out_menu[node].append((label, q_out_menu_counter[label]))
+        q_out_menu[node].sort(key=lambda x: x[0])
+
+    return queries, q_in, q_out, q_in_menu, q_out_menu

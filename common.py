@@ -25,7 +25,7 @@ class TreeNode:
         # 注：这里会不会非常非常慢啊！
         tmp = set(self.data)
         for edge in self.children:
-            tmp.union(self.children[edge].get_subtree_node_set())
+            tmp = tmp.union(self.children[edge].get_subtree_node_set())
         return tmp
 
 
