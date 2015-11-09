@@ -4,7 +4,7 @@ import common
 __author__ = 'alex'
 
 
-head_map = {}
+head_map = None
 END = 0
 
 
@@ -15,8 +15,8 @@ def entrance(in_tree, out_tree, twigs, l_in, l_out, q_in, q_out, q_in_menu, q_ou
     END = len(twigs)
     for twig in twigs:
         heads.append(twig.head)
-    head_map = __get_head_map(in_tree, out_tree, heads, q_in, q_out, q_in_menu, q_out_menu)
-    if head_map == common.INVALID_CANDIDATE:
+    result = __get_head_map(in_tree, out_tree, heads, q_in, q_out, q_in_menu, q_out_menu)
+    if result == common.INVALID_CANDIDATE:
         return common.INVALID_CANDIDATE
     querybox_list = [common.QueryBox(0)]
     h = 0
@@ -29,14 +29,20 @@ def entrance(in_tree, out_tree, twigs, l_in, l_out, q_in, q_out, q_in_menu, q_ou
 
 
 def __get_head_map(in_tree, out_tree, heads, q_in, q_out, q_in_menu, q_out_menu):
+    global head_map
+
     head_map = {}
     for head in heads:
-        in_set = __locate_node(head, q_in, q_in_menu, in_tree).get_subtree_node_set()
-        if in_set == common.INVALID_CANDIDATE:
+        result = __locate_node(head, q_in, q_in_menu, in_tree)
+        if result == common.INVALID_CANDIDATE:
+            return common.INVALID_CANDIDATE
+        in_set = result.get_subtree_node_set()
+
+        result = __locate_node(head, q_out, q_out_menu, out_tree)
+        if result == common.INVALID_CANDIDATE:
             return common.INVALID_CANDIDATE
         out_set = __locate_node(head, q_out, q_out_menu, out_tree).get_subtree_node_set()
-        if out_set == common.INVALID_CANDIDATE:
-            return common.INVALID_CANDIDATE
+
         head_map[head] = in_set.intersection(out_set)
     return head_map
 
@@ -64,7 +70,7 @@ def __core(l_in, l_out, box, twigs):
     tmp_list = []
     for head_candidate in head_map[twig.head]:
         new_box = common.QueryBox(box.step + 1)
-        new_box.candidate = box.candidate
+        new_box.candidate = box.candidate.copy()
         if twig.head in new_box.candidate and head_candidate not in new_box.candidate[twig.head]:
             continue
         new_box.candidate[twig.head] = {head_candidate}
