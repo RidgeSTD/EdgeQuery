@@ -1,8 +1,8 @@
 __author__ = 'alex'
 
 
-INVALIDATE_CANDIDATE = -999
-VALIDATE_CANDIDATE = 0
+INVALID_CANDIDATE = -999
+VALID_CANDIDATE = 0
 
 
 class TreeNode:
@@ -87,7 +87,7 @@ class DegreeTuple:
 class QueryBox:
     """
     :如果一个点不在candidate里, 意味着它与所有点产生映射!
-    也就是 candidate[node]=None 与 candidate[node]=[] 不一样!
+    也就是 candidate[node]=None 与 candidate[node]={} 不一样!
     只有这个比较特殊!
     """
     def __init__(self, step):
@@ -107,16 +107,16 @@ class QueryBox:
                 for each in self.candidate[node]:
                     griddle = each
                 if not griddle:
-                    return INVALIDATE_CANDIDATE
+                    return INVALID_CANDIDATE
                 for other in self.candidate:
                     if node != other:
                         try:
                             self.candidate[other].remove(griddle)
-                        except ValueError:
+                        except:
                             pass
                         new_len = len(self.candidate[other])
                         if new_len < 1:
-                            return INVALIDATE_CANDIDATE
+                            return INVALID_CANDIDATE
                         if new_len == 1:
                             pipe_line.append(other)
         h = 0
@@ -126,23 +126,23 @@ class QueryBox:
             for each in self.candidate[pipe_line[h]]:
                 griddle = each
             if not griddle:
-                return INVALIDATE_CANDIDATE
+                return INVALID_CANDIDATE
             for other in self.candidate:
                 if other != pipe_line[h]:
                     try:
                         self.candidate[other].remove(griddle)
                         new_len = len(self.candidate[other])
                         if new_len < 1:
-                            return INVALIDATE_CANDIDATE
+                            return INVALID_CANDIDATE
                         if new_len == 1:
                             pipe_line.append(other)
                             r += 1
-                    except ValueError:
+                    except:
                         pass
 
             h += 1
 
-        return VALIDATE_CANDIDATE
+        return VALID_CANDIDATE
 
     def adapt_candidates(self, ex_candidates, filter_afterwards=True):
         for node in ex_candidates:

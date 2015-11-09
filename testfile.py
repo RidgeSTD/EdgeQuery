@@ -1,5 +1,3 @@
-a = [1, 2]
-b = None
-c = [2, 3]
-a.extend(b)
-print(a)
+a = [1,2,3]
+b = set(a)
+print(b)
