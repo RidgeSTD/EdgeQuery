@@ -1,9 +1,15 @@
-__author__ = 'alex'
-
 from common import TreeNode
 
+__author__ = 'alex'
 
-def build_in_out_table(l_in, l_out, l_in_menu, l_out_menu):
+
+def init_in_out_tree(l_in, l_out, l_in_menu, l_out_menu, node_set):
+    in_table, out_table = __build_in_out_table(l_in, l_out, l_in_menu, l_out_menu)
+    in_tree, out_tree = __build_in_out_tree(in_table, out_table, l_in_menu, l_out_menu, node_set)
+    return in_tree, out_tree
+
+
+def __build_in_out_table(l_in, l_out, l_in_menu, l_out_menu):
     in_table = {}
     out_table = {}
     for node in l_in:
@@ -17,10 +23,23 @@ def build_in_out_table(l_in, l_out, l_in_menu, l_out_menu):
     return in_table, out_table
 
 
-def build_tree(table, menu):
+def __build_in_out_tree(in_table, out_table, l_in_menu, l_out_menu, node_set):
+    in_tree = __build_tree(in_table, l_in_menu, node_set)
+    out_tree = __build_tree(out_table, l_out_menu, node_set)
+    return in_tree, out_tree
+
+
+def __build_tree(table, menu, node_set):
     root = TreeNode(data=[])
-    for node in table:
+    for node in node_set:
         pin = root
+        if node not in menu:
+            root.data.append(node)
+            continue
+        if not menu[node]:
+            root.data.append(node)
+            continue
+
         for label in menu[node]:
             for i in range(0, table[node][label]):
                 if label not in pin.children:
@@ -33,13 +52,4 @@ def build_tree(table, menu):
     return root
 
 
-def build_in_out_tree(in_table, out_table, l_in_menu, l_out_menu):
-    in_tree = build_tree(in_table, l_in_menu)
-    out_tree = build_tree(out_table, l_out_menu)
-    return in_tree, out_tree
 
-
-def init_in_out_tree(l_in, l_out, l_in_menu, l_out_menu):
-    in_table, out_table = build_in_out_table(l_in, l_out, l_in_menu, l_out_menu)
-    in_tree, out_tree = build_in_out_tree(in_table, out_table, l_in_menu, l_out_menu)
-    return in_tree, out_tree

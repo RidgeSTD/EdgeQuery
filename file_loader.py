@@ -28,6 +28,7 @@ def load_map():
     l_out = {}
     l_in_menu = {}
     l_out_menu = {}
+    node_set = set()
     f = open("/Users/alex/data.txt")
     while True:
         line = f.readline()
@@ -37,6 +38,10 @@ def load_map():
         ori = int(tpl[0])
         edg = int(tpl[1])
         des = int(tpl[2])
+
+        node_set.add(ori)
+        node_set.add(des)
+
         if ori not in l_out:
             l_out[ori] = {}
         if ori not in l_out_menu:
@@ -70,4 +75,4 @@ def load_map():
     # __get_label_count(l_out_menu, l_out)
 
     print("end loading file...")
-    return l_in, l_out, l_in_menu, l_out_menu
+    return l_in, l_out, l_in_menu, l_out_menu, node_set
