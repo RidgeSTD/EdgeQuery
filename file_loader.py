@@ -1,22 +1,6 @@
 __author__ = 'alex'
 
 
-def __inner_sort(arr, menu):
-    for node in menu:
-        menu[node].sort()
-        for label in menu[node]:
-            arr[node][label].sort()
-
-
-# def __get_label_count(label_menu, label_list):
-#     """
-#     in this function, menu is convert from only to two-tuple
-#     """
-#     for node in label_list:
-#         for i in range(0, len(label_menu[node])):
-#             label_menu[node][i] = (label_menu[node][i], len(label_list[node][label_menu[node][i]]))
-
-
 def load_map():
     """
     Pass L_in, L_out, noted for in/out degree dictionary and in/out label-marked dictionary
@@ -76,3 +60,19 @@ def load_map():
 
     print("end loading file...")
     return l_in, l_out, l_in_menu, l_out_menu, node_set
+
+
+def __inner_sort(arr, menu):
+    for node in menu:
+        menu[node].sort()
+        for label in menu[node]:
+            arr[node][label].sort()
+
+
+# def __get_label_count(label_menu, label_list):
+#     """
+#     in this function, menu is convert from only to two-tuple
+#     """
+#     for node in label_list:
+#         for i in range(0, len(label_menu[node])):
+#             label_menu[node][i] = (label_menu[node][i], len(label_list[node][label_menu[node][i]]))

@@ -85,6 +85,11 @@ class DegreeTuple:
 
 
 class QueryBox:
+    """
+    :如果一个点不在candidate里, 意味着它与所有点产生映射!
+    也就是 candidate[node]=None 与 candidate[node]=[] 不一样!
+    只有这个比较特殊!
+    """
     def __init__(self, step):
         self.step = step
         self.candidate = {}
@@ -95,7 +100,7 @@ class QueryBox:
         if null set caused, return common.INVALIDATE_CANDIDAT
         :return:
         """
-        pipe = []
+        pipe_line = []
         for node in self.candidate:
             if len(self.candidate[node]) == 1:
                 griddle = None
@@ -107,32 +112,44 @@ class QueryBox:
                     if node != other:
                         try:
                             self.candidate[other].remove(griddle)
-                        except KeyError:
+                        except ValueError:
                             pass
                         new_len = len(self.candidate[other])
                         if new_len < 1:
                             return INVALIDATE_CANDIDATE
                         if new_len == 1:
-                            pipe.append(other)
+                            pipe_line.append(other)
         h = 0
-        r = len(pipe)
+        r = len(pipe_line)
         while h < r:
             griddle = None
-            for each in self.candidate[pipe[h]]:
+            for each in self.candidate[pipe_line[h]]:
                 griddle = each
             if not griddle:
-                    return INVALIDATE_CANDIDATE
+                return INVALIDATE_CANDIDATE
             for other in self.candidate:
-                if other != pipe[h]:
+                if other != pipe_line[h]:
                     try:
                         self.candidate[other].remove(griddle)
-                    except KeyError:
+                        new_len = len(self.candidate[other])
+                        if new_len < 1:
+                            return INVALIDATE_CANDIDATE
+                        if new_len == 1:
+                            pipe_line.append(other)
+                            r += 1
+                    except ValueError:
                         pass
-                    new_len = len(self.candidate[other])
-                    if new_len < 1:
-                        return INVALIDATE_CANDIDATE
-                    if new_len == 1:
-                        pipe.append(other)
-                        r += 1
+
+            h += 1
 
         return VALIDATE_CANDIDATE
+
+    def adapt_candidates(self, ex_candidates, filter_afterwards=True):
+        for node in ex_candidates:
+            if node in self.candidate:
+                self.candidate[node] = self.candidate[node].intersection(ex_candidates[node])
+            else:
+                self.candidate[node] = ex_candidates[node]
+        if filter_afterwards:
+            return self.filter()
+        return None
