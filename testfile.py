@@ -1,6 +1,4 @@
-import time
-from heapq import *
-
-a = [2,4,6,4,2,45]
-heapify(a)
-print(nlargest(20, a))
+a = {100: {1}, 5: {2, 4}}
+b = list(a)
+print(b)
+print(len(a[5]))

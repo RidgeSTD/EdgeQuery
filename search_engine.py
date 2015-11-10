@@ -64,7 +64,7 @@ def __locate_node(head, q_edge, q_menu, tree):
     ans_list = []
     h = 0
     t = 0
-    ESC = len(q_menu)
+    ESC = len(q_menu[head])
     while h <= t:
         q_label = q_menu[head][q[h].step[0]][0]
         for i in range(0, len(q[h].cursor.label_menu)):
@@ -75,7 +75,7 @@ def __locate_node(head, q_edge, q_menu, tree):
                 if q[h].step[0] == ESC - 1 and q[h].step[1] >= q_menu[head][q[h].step[0]][1]:
                     ans_list.append(q[h].cursor.children[tree_label])
                     continue
-                if q[h].step[1] >= q_menu[q[h].step[0]][1]:
+                if q[h].step[1] >= q_menu[head][q[h].step[0]][1]:
                     q.append(block(cursor=q[h].cursor.children[tree_label], step=(q[h].step[0] + 1, 1)))
                 else:
                     q.append(block(cursor=q[h].cursor.children[tree_label], step=(q[h].step[0], q[h].step[1] + 1)))
@@ -123,4 +123,25 @@ def __core(l_in, l_out, box, twigs):
 
 
 def __print_ans(candidate):
-    print(candidate)
+    def iter(step):
+        if step >= ESC:
+            s = ""
+            for q_node in buf:
+                s += (str(q_node)+" = "+str(buf[q_node])+",\t")
+            s += '\n'
+            fo.write(s)
+            print(s)
+            return
+        for can in candidate[can_list[step]]:
+            buf[can_list[step]] = can
+            iter(step + 1)
+
+    fo = open('/Users/alex/answer.txt', 'a')
+    can_list = list(candidate)
+    ESC = len(can_list)
+    buf = {}
+    iter(0)
+    fo.close()
+
+
+
