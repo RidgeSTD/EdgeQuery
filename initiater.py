@@ -49,6 +49,18 @@ def __build_tree(table, menu, node_set):
                 else:
                     pin = pin.children[label]
         pin.data.append(node)
+
+    # 梳理树中的目录信息
+    q = [root]
+    h = 0
+    t = 0
+    while h <= t:
+        q[h].label_menu.sort()
+        for edge in q[h].children:
+            q.append(q[h].children[edge])
+        t += len(q[h].children)
+        h += 1
+
     return root
 
 

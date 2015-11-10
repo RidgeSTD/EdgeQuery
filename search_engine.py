@@ -36,28 +36,55 @@ def __get_head_map(in_tree, out_tree, heads, q_in, q_out, q_in_menu, q_out_menu)
         result = __locate_node(head, q_in, q_in_menu, in_tree)
         if result == common.INVALID_CANDIDATE:
             return common.INVALID_CANDIDATE
-        in_set = result.get_subtree_node_set()
+        in_set = set()
+        for tree_node in result:
+            in_set = in_set.union(tree_node.get_subtree_node_set())
 
         result = __locate_node(head, q_out, q_out_menu, out_tree)
         if result == common.INVALID_CANDIDATE:
             return common.INVALID_CANDIDATE
-        out_set = __locate_node(head, q_out, q_out_menu, out_tree).get_subtree_node_set()
+        out_set = set()
+        for tree_node in result:
+            out_set = out_set.union(tree_node.get_subtree_node_set())
 
         head_map[head] = in_set.intersection(out_set)
     return head_map
 
 
 def __locate_node(head, q_edge, q_menu, tree):
-    cursor = tree
+    class block:
+        def __init__(self, cursor, step):
+            self.cursor = cursor
+            self.step = step
+
     if head not in q_menu:
-        return cursor
-    for label, count in q_menu[head]:
-        for i in range(0, count):
-            try:
-                cursor = cursor.children[label]
-            except KeyError:
-                return common.INVALID_CANDIDATE
-    return cursor
+        return [tree]
+
+    q = [block(cursor=tree, step=(0, 1))]
+    ans_list = []
+    h = 0
+    t = 0
+    ESC = len(q_menu)
+    while h <= t:
+        q_label = q_menu[head][q[h].step[0]][0]
+        for i in range(0, len(q[h].cursor.label_menu)):
+            tree_label = q[h].cursor.label_menu[i]
+            if tree_label > q_label:
+                break
+            elif tree_label == q_label:
+                if q[h].step[0] == ESC - 1 and q[h].step[1] >= q_menu[head][q[h].step[0]][1]:
+                    ans_list.append(q[h].cursor.children[tree_label])
+                    continue
+                if q[h].step[1] >= q_menu[q[h].step[0]][1]:
+                    q.append(block(cursor=q[h].cursor.children[tree_label], step=(q[h].step[0] + 1, 1)))
+                else:
+                    q.append(block(cursor=q[h].cursor.children[tree_label], step=(q[h].step[0], q[h].step[1] + 1)))
+                t += 1
+            else:
+                q.append(block(cursor=q[h].cursor.children[tree_label], step=q[h].step))
+                t += 1
+        h += 1
+    return ans_list
 
 
 def __core(l_in, l_out, box, twigs):

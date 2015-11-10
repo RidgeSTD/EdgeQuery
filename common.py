@@ -11,9 +11,11 @@ class TreeNode:
             data = []
         self.data = data
         self.children = {}
+        self.label_menu = []
 
     def add_child(self, edge, c_node):
         self.children[edge] = c_node
+        self.label_menu.append(edge)
 
     def traverse(self, debug=False):
         for edge in self.children:
