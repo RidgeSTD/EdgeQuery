@@ -1,3 +1,5 @@
+import time
+
 __author__ = 'alex'
 
 
@@ -7,7 +9,8 @@ def load_map():
 
     NOTE! The initialization must be done outside the function
     """
-    print("start loading file...")
+    print("开始加载文件...")
+    t_start_load_file = time.clock()
     l_in = {}
     l_out = {}
     l_in_menu = {}
@@ -51,14 +54,17 @@ def load_map():
             l_in_menu[des].append(edg)
         if edg not in l_out_menu[ori]:
             l_out_menu[ori].append(edg)
+    f.close()
+    t_end_load_file = time.clock()
+    print("结束加载文件...")
+    print('加载文件耗时 ' + str(t_end_load_file - t_start_load_file))
 
+    t_start_sort_raw_data = time.clock()
     __inner_sort(l_in, l_in_menu)
     __inner_sort(l_out, l_out_menu)
+    t_end_sort_raw_data = time.clock()
+    print("原始数据内部排序耗时 " + str(t_end_sort_raw_data - t_start_sort_raw_data))
 
-    # __get_label_count(l_in_menu, l_in)
-    # __get_label_count(l_out_menu, l_out)
-
-    print("end loading file...")
     return l_in, l_out, l_in_menu, l_out_menu, node_set
 
 
@@ -67,12 +73,3 @@ def __inner_sort(arr, menu):
         menu[node].sort()
         for label in menu[node]:
             arr[node][label].sort()
-
-
-# def __get_label_count(label_menu, label_list):
-#     """
-#     in this function, menu is convert from only to two-tuple
-#     """
-#     for node in label_list:
-#         for i in range(0, len(label_menu[node])):
-#             label_menu[node][i] = (label_menu[node][i], len(label_list[node][label_menu[node][i]]))

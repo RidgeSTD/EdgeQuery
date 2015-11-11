@@ -1,31 +1,38 @@
 import common
-
-
+import time
+import statics
 __author__ = 'alex'
-
 
 head_map = None
 END = 0
 
 
-def entrance(in_tree, out_tree, twigs, l_in, l_out, q_in, q_out, q_in_menu, q_out_menu):
+def entrance(in_tree, out_tree, twigs, l_in, l_out, q_in, q_out, q_in_menu, q_out_menu, fo):
     global head_map, END
 
     heads = []
     END = len(twigs)
     for twig in twigs:
         heads.append(twig.head)
+    print("开始获取head映射...")
+    t1 = time.clock()
     result = __get_head_map(in_tree, out_tree, heads, q_in, q_out, q_in_menu, q_out_menu)
+    t2 = time.clock()
+    print("获取head映射耗时 " + str(t2 - t1))
     if result == common.INVALID_CANDIDATE:
         return common.INVALID_CANDIDATE
     querybox_list = [common.QueryBox(0)]
     h = 0
     t = 1
+    print("查询内核启动...")
+    t3 = time.clock()
     while h < t:
-        result = __core(l_in=l_in, l_out=l_out, box=querybox_list[h], twigs=twigs)
+        result = __core(l_in=l_in, l_out=l_out, box=querybox_list[h], twigs=twigs, fo=fo)
         querybox_list.extend(result)
         t += len(result)
         h += 1
+    t4 = time.clock()
+    print("查询内核运行耗时 " + str(t4 - t3))
 
 
 def __get_head_map(in_tree, out_tree, heads, q_in, q_out, q_in_menu, q_out_menu):
@@ -87,11 +94,11 @@ def __locate_node(head, q_edge, q_menu, tree):
     return ans_list
 
 
-def __core(l_in, l_out, box, twigs):
+def __core(l_in, l_out, box, twigs, fo):
     global head_map, END
 
     if box.step >= END:
-        __print_ans(box.candidate)
+        __print_ans(box.candidate, fo)
         return []
     twig = twigs[box.step]
     tmp_list = []
@@ -122,26 +129,24 @@ def __core(l_in, l_out, box, twigs):
     return tmp_list
 
 
-def __print_ans(candidate):
+def __print_ans(candidate, fo):
     def iter(step):
         if step >= ESC:
             s = ""
             for q_node in buf:
-                s += (str(q_node)+" = "+str(buf[q_node])+",\t")
+                s += (str(q_node) + " = " + str(buf[q_node]) + ",\t")
             s += '\n'
             fo.write(s)
-            print(s)
+            # print(s)
             return
         for can in candidate[can_list[step]]:
             buf[can_list[step]] = can
             iter(step + 1)
 
-    fo = open('/Users/alex/answer.txt', 'a')
+    t1 = time.clock()
     can_list = list(candidate)
     ESC = len(can_list)
     buf = {}
     iter(0)
-    fo.close()
-
-
-
+    t2 = time.clock()
+    statics.ans_io_time += (t2 - t1)

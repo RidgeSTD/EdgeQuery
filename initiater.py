@@ -1,4 +1,5 @@
 from common import TreeNode
+import time
 
 __author__ = 'alex'
 
@@ -10,6 +11,8 @@ def init_in_out_tree(l_in, l_out, l_in_menu, l_out_menu, node_set):
 
 
 def __build_in_out_table(l_in, l_out, l_in_menu, l_out_menu):
+    print("开始构建出入度表...")
+    t1 = time.clock()
     in_table = {}
     out_table = {}
     for node in l_in:
@@ -20,12 +23,18 @@ def __build_in_out_table(l_in, l_out, l_in_menu, l_out_menu):
         out_table[node] = {}
         for label in l_out_menu[node]:
             out_table[node][label] = len(l_out[node][label])
+    t2 = time.clock()
+    print("构建出入度表耗时 " + str(t2 - t1))
     return in_table, out_table
 
 
 def __build_in_out_tree(in_table, out_table, l_in_menu, l_out_menu, node_set):
+    print("开始构建出入度树...")
+    t1 = time.clock()
     in_tree = __build_tree(in_table, l_in_menu, node_set)
     out_tree = __build_tree(out_table, l_out_menu, node_set)
+    t2 = time.clock()
+    print("构建出入度树耗时 " + str(t2 - t1))
     return in_tree, out_tree
 
 
@@ -62,6 +71,3 @@ def __build_tree(table, menu, node_set):
         h += 1
 
     return root
-
-
-
