@@ -1,5 +1,7 @@
 import time
 
+import statics
+
 __author__ = 'alex'
 
 
@@ -10,6 +12,7 @@ def load_map():
     NOTE! The initialization must be done outside the function
     """
     print("开始加载文件...")
+    print("开始加载文件...", file=statics.f_cons)
     t_start_load_file = time.clock()
     l_in = {}
     l_out = {}
@@ -57,13 +60,16 @@ def load_map():
     f.close()
     t_end_load_file = time.clock()
     print("结束加载文件...")
+    print("结束加载文件...", file=statics.f_cons)
     print('加载文件耗时 ' + str(t_end_load_file - t_start_load_file))
+    print('加载文件耗时 ' + str(t_end_load_file - t_start_load_file), file=statics.f_cons)
 
     t_start_sort_raw_data = time.clock()
     __inner_sort(l_in, l_in_menu)
     __inner_sort(l_out, l_out_menu)
     t_end_sort_raw_data = time.clock()
     print("原始数据内部排序耗时 " + str(t_end_sort_raw_data - t_start_sort_raw_data))
+    print("原始数据内部排序耗时 " + str(t_end_sort_raw_data - t_start_sort_raw_data), file=statics.f_cons)
 
     return l_in, l_out, l_in_menu, l_out_menu, node_set
 

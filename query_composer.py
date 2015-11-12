@@ -1,25 +1,31 @@
 from common import Twig
 from common import DegreeTuple
 import time
+import statics
 
 __author__ = 'alex'
 
 
 def compose_query(file_name=None):
     print("开始加载查询文件...")
+    print("开始加载查询文件...", file=statics.f_cons)
     t1 = time.clock()
 
     if file_name is None:
         file_name = "/Users/alex/queries.txt"
     queries = []
+    q_in = []
+    q_out = []
+    q_in_menu = []
+    q_out_menu = []
     q_counter = -1
 
     q_file = open(file_name, 'r')
     has_more_query = True
     while has_more_query:
         queries.append([])
-        q_in = {}
-        q_out = {}
+        q_in.append({})
+        q_out.append({})
         flaged = set()
         degree = {}
         e_counter = 0
@@ -27,6 +33,7 @@ def compose_query(file_name=None):
             line = q_file.readline()
             if len(line) < 1:
                 # 文件尾部
+                q_counter += 1
                 has_more_query = False
                 break
             if len(line) == 1:
@@ -49,64 +56,68 @@ def compose_query(file_name=None):
                 degree[des] = DegreeTuple(in_degree=1, out_degree=0)
 
             try:
-                q_in[des].append((edg, ori))
+                q_in[q_counter + 1][des].append((edg, ori))
             except KeyError:
-                q_in[des] = []
-                q_in[des].append((edg, ori))
+                q_in[q_counter + 1][des] = []
+                q_in[q_counter + 1][des].append((edg, ori))
 
             try:
-                q_out[ori].append((edg, des))
+                q_out[q_counter + 1][ori].append((edg, des))
             except KeyError:
-                q_out[ori] = []
-                q_out[ori].append((edg, des))
+                q_out[q_counter + 1][ori] = []
+                q_out[q_counter + 1][ori].append((edg, des))
 
         t3 = time.clock()
         while e_counter > 0:
             head = __find_head(degree=degree, flaged=flaged)
             m_twig = Twig(head=head)
-            m_twig.in_edge, m_twig.out_edge = __build_twig_prune_query(head=head, in_set=q_in, out_set=q_out,
+            m_twig.in_edge, m_twig.out_edge = __build_twig_prune_query(head=head, in_set=q_in[q_counter],
+                                                                       out_set=q_out[q_counter],
                                                                        flaged=flaged, degree=degree)
             flaged.add(head)
             e_counter -= (len(m_twig.in_edge) + len(m_twig.out_edge))
             queries[q_counter].append(m_twig)
         t4 = time.clock()
         print('分割第' + str(len(queries)) + " 个查询耗时 " + str(t4 - t3))
+        print('分割第' + str(len(queries)) + " 个查询耗时 " + str(t4 - t3), file=statics.f_cons)
+
+        t5 = time.clock()
+        q_in_menu.append({})
+        for node in q_in[q_counter]:
+            q_in_menu_counter = {}
+            q_in_menu[q_counter][node] = []
+            for label, ori in q_in[q_counter][node]:
+                if label not in q_in_menu_counter:
+                    q_in_menu_counter[label] = 1
+                else:
+                    q_in_menu_counter[label] += 1
+                    # 这里与degree的统计信息重复了!
+            for label in q_in_menu_counter:
+                q_in_menu[q_counter][node].append((label, q_in_menu_counter[label]))
+            q_in_menu[q_counter][node].sort(key=lambda x: x[0])
+
+        q_out_menu.append({})
+        for node in q_out[q_counter]:
+            q_out_menu_counter = {}
+            q_out_menu[q_counter][node] = []
+            for label, ori in q_out[q_counter][node]:
+                if label not in q_out_menu_counter:
+                    q_out_menu_counter[label] = 1
+                else:
+                    q_out_menu_counter[label] += 1
+                    # 这里与degree的统计信息重复了!
+            for label in q_out_menu_counter:
+                q_out_menu[q_counter][node].append((label, q_out_menu_counter[label]))
+            q_out_menu[q_counter][node].sort(key=lambda x: x[0])
+        t6 = time.clock()
+        print("统计查询信息耗时 " + str(t6 - t5))
+        print("统计查询信息耗时 " + str(t6 - t5), file=statics.f_cons)
+
+        t2 = time.clock()
+        print("加载查询共耗时 " + str(t2 - t1))
+        print("加载查询共耗时 " + str(t2 - t1), file=statics.f_cons)
 
     q_file.close()
-
-    t5 = time.clock()
-    q_in_menu = {}
-    for node in q_in:
-        q_in_menu_counter = {}
-        q_in_menu[node] = []
-        for label, ori in q_in[node]:
-            if label not in q_in_menu_counter:
-                q_in_menu_counter[label] = 1
-            else:
-                q_in_menu_counter[label] += 1
-                # 这里与degree的统计信息重复了!
-        for label in q_in_menu_counter:
-            q_in_menu[node].append((label, q_in_menu_counter[label]))
-        q_in_menu[node].sort(key=lambda x: x[0])
-
-    q_out_menu = {}
-    for node in q_out:
-        q_out_menu_counter = {}
-        q_out_menu[node] = []
-        for label, ori in q_out[node]:
-            if label not in q_out_menu_counter:
-                q_out_menu_counter[label] = 1
-            else:
-                q_out_menu_counter[label] += 1
-                # 这里与degree的统计信息重复了!
-        for label in q_out_menu_counter:
-            q_out_menu[node].append((label, q_out_menu_counter[label]))
-        q_out_menu[node].sort(key=lambda x: x[0])
-    t6 = time.clock()
-    print("统计查询信息耗时 " + str(t6 - t5))
-
-    t2 = time.clock()
-    print("加载查询共耗时 " + str(t2 - t1))
 
     return queries, q_in, q_out, q_in_menu, q_out_menu
 

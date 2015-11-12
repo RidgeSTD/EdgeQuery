@@ -15,16 +15,19 @@ def entrance(in_tree, out_tree, twigs, l_in, l_out, q_in, q_out, q_in_menu, q_ou
     for twig in twigs:
         heads.append(twig.head)
     print("开始获取head映射...")
+    print("开始获取head映射...", file=statics.f_cons)
     t1 = time.clock()
     result = __get_head_map(in_tree, out_tree, heads, q_in, q_out, q_in_menu, q_out_menu)
     t2 = time.clock()
     print("获取head映射耗时 " + str(t2 - t1))
+    print("获取head映射耗时 " + str(t2 - t1), file=statics.f_cons)
     if result == common.INVALID_CANDIDATE:
         return common.INVALID_CANDIDATE
     querybox_list = [common.QueryBox(0)]
     h = 0
     t = 1
     print("查询内核启动...")
+    print("查询内核启动...", file=statics.f_cons)
     t3 = time.clock()
     while h < t:
         result = __core(l_in=l_in, l_out=l_out, box=querybox_list[h], twigs=twigs, fo=fo)
@@ -33,6 +36,7 @@ def entrance(in_tree, out_tree, twigs, l_in, l_out, q_in, q_out, q_in_menu, q_ou
         h += 1
     t4 = time.clock()
     print("查询内核运行耗时 " + str(t4 - t3))
+    print("查询内核运行耗时 " + str(t4 - t3), file=statics.f_cons)
 
 
 def __get_head_map(in_tree, out_tree, heads, q_in, q_out, q_in_menu, q_out_menu):
@@ -91,7 +95,10 @@ def __locate_node(head, q_edge, q_menu, tree):
                 q.append(block(cursor=q[h].cursor.children[tree_label], step=q[h].step))
                 t += 1
         h += 1
-    return ans_list
+    if not ans_list:
+        return common.INVALID_CANDIDATE
+    else:
+        return ans_list
 
 
 def __core(l_in, l_out, box, twigs, fo):

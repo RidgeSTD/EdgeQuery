@@ -1,3 +1,5 @@
+import statics
+
 __author__ = 'alex'
 
 
@@ -21,6 +23,7 @@ class TreeNode:
         for edge in self.children:
             if debug:
                 print(str(self.data) + " -" + str(edge) + "-> " + str(self.children[edge].data))
+                print(str(self.data) + " -" + str(edge) + "-> " + str(self.children[edge].data), file=statics.f_cons)
             self.children[edge].traverse(debug)
 
     def get_subtree_node_set(self):
@@ -108,26 +111,27 @@ class QueryBox:
                 griddle = None
                 for each in self.candidate[node]:
                     griddle = each
-                if not griddle:
+                if griddle is None:
                     return INVALID_CANDIDATE
                 for other in self.candidate:
                     if node != other:
                         try:
                             self.candidate[other].remove(griddle)
+                            new_len = len(self.candidate[other])
+                            if new_len < 1:
+                                return INVALID_CANDIDATE
+                            if new_len == 1:
+                                pipe_line.append(other)
                         except:
                             pass
-                        new_len = len(self.candidate[other])
-                        if new_len < 1:
-                            return INVALID_CANDIDATE
-                        if new_len == 1:
-                            pipe_line.append(other)
+
         h = 0
         r = len(pipe_line)
         while h < r:
             griddle = None
             for each in self.candidate[pipe_line[h]]:
                 griddle = each
-            if not griddle:
+            if griddle is None:
                 return INVALID_CANDIDATE
             for other in self.candidate:
                 if other != pipe_line[h]:
