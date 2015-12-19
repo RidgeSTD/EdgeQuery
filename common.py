@@ -14,17 +14,11 @@ class TreeNode:
         self.data = data
         self.children = {}
         self.label_menu = []
+        self.prophesy = []
 
     def add_child(self, edge, c_node):
         self.children[edge] = c_node
         self.label_menu.append(edge)
-
-    def traverse(self, debug=False):
-        for edge in self.children:
-            if debug:
-                print(str(self.data) + " -" + str(edge) + "-> " + str(self.children[edge].data))
-                print(str(self.data) + " -" + str(edge) + "-> " + str(self.children[edge].data), file=statics.f_cons)
-            self.children[edge].traverse(debug)
 
     def get_subtree_node_set(self):
         # 注：这里会不会非常非常慢啊！
