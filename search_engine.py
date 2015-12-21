@@ -1,5 +1,7 @@
-import common
+import copy
 import time
+
+import common
 import statics
 __author__ = 'alex'
 
@@ -92,8 +94,9 @@ def __locate_node(head, q_edge, q_menu, tree):
                     q.append(block(cursor=q[h].cursor.children[tree_label], step=(q[h].step[0], q[h].step[1] + 1)))
                 t += 1
             else:
-                q.append(block(cursor=q[h].cursor.children[tree_label], step=q[h].step))
-                t += 1
+                if q_label in q[h].cursor.children[tree_label].prophesy:
+                    q.append(block(cursor=q[h].cursor.children[tree_label], step=q[h].step))
+                    t += 1
         h += 1
     if not ans_list:
         return common.INVALID_CANDIDATE
@@ -111,7 +114,7 @@ def __core(l_in, l_out, box, twigs, fo):
     tmp_list = []
     for head_candidate in head_map[twig.head]:
         new_box = common.QueryBox(box.step + 1)
-        new_box.candidate = box.candidate.copy()
+        new_box.candidate = copy.deepcopy(box.candidate)
         if twig.head in new_box.candidate and head_candidate not in new_box.candidate[twig.head]:
             continue
         new_box.candidate[twig.head] = {head_candidate}

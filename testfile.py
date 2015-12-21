@@ -1,8 +1,17 @@
+from copy import deepcopy
+
+from common import QueryBox
+
 def main():
-    a = [1, 2, 3, 4]
-    t = 2
-    print(a[t])
-    print(a[0: t+1])
+    a = QueryBox(0)
+    a.candidate = {2:[4]}
+    b = QueryBox(1)
+    b.candidate = deepcopy(a.candidate)
+    # b.candidate = a.candidate.copy()
+    # b.candidate[2].append(5)
+    print(a.candidate)
+
+
 
 
 def safea(stack, t, data):
