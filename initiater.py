@@ -75,6 +75,9 @@ def __build_tree(table, menu, node_set):
         t += len(q[h].children)
         h += 1
 
+    print("开始构建出入度树的prophecy...")
+    print("开始构建出入度树的prophecy...", file=statics.f_cons)
+    t_p_1 = time.clock()
     # 梳理树中prophesy信息让节点包含其之下所有边标签,指导locate_node搜索
     visited_stack = [0]
     v_cri_stack = [0]
@@ -120,6 +123,9 @@ def __build_tree(table, menu, node_set):
                 pass
             t_u -= 1  # 将该点pop并不push进visited_stack直接丢弃
 
+    t_p_2 = time.clock()
+    print("构建出入度树的prophecy耗时 " + str(t_p_2 - t_p_1))
+    print("构建出入度构建出入度树的prophecy耗时树耗时 " + str(t_p_2 - t_p_1), file=statics.f_cons)
     return root
 
 

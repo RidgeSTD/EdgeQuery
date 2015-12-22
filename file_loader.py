@@ -1,6 +1,7 @@
 import time
 
 import statics
+from common import ROOT_PATH
 
 __author__ = 'alex'
 
@@ -19,7 +20,7 @@ def load_map():
     l_in_menu = {}
     l_out_menu = {}
     node_set = set()
-    f = open("/Users/alex/data.txt")
+    f = open(ROOT_PATH + "data.txt")
     while True:
         line = f.readline()
         if len(line) < 1:

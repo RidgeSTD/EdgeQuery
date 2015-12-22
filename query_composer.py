@@ -1,7 +1,8 @@
-from common import Twig
-from common import DegreeTuple
 import time
 import statics
+from common import Twig
+from common import DegreeTuple
+from common import ROOT_PATH
 
 __author__ = 'alex'
 
@@ -12,7 +13,7 @@ def compose_query(file_name=None):
     t1 = time.clock()
 
     if file_name is None:
-        file_name = "/Users/alex/queries.txt"
+        file_name = ROOT_PATH + "queries.txt"
     queries = []
     q_in = []
     q_out = []

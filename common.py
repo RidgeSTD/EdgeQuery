@@ -6,6 +6,8 @@ __author__ = 'alex'
 INVALID_CANDIDATE = -999
 VALID_CANDIDATE = 0
 
+ROOT_PATH = '/Users/alex/'
+
 
 class TreeNode:
     def __init__(self, data=None):
