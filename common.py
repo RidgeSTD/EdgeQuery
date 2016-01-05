@@ -16,7 +16,6 @@ class TreeNode:
         self.data = data
         self.children = {}
         self.label_menu = []
-        self.prophesy = []
 
     def add_child(self, edge, c_node):
         self.children[edge] = c_node

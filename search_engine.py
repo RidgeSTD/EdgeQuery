@@ -94,9 +94,8 @@ def __locate_node(head, q_edge, q_menu, tree):
                     q.append(block(cursor=q[h].cursor.children[tree_label], step=(q[h].step[0], q[h].step[1] + 1)))
                 t += 1
             else:
-                if q_label in q[h].cursor.children[tree_label].prophesy:
-                    q.append(block(cursor=q[h].cursor.children[tree_label], step=q[h].step))
-                    t += 1
+                q.append(block(cursor=q[h].cursor.children[tree_label], step=q[h].step))
+                t += 1
         h += 1
     if not ans_list:
         return common.INVALID_CANDIDATE

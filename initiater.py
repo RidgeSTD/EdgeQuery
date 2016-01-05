@@ -75,57 +75,6 @@ def __build_tree(table, menu, node_set):
         t += len(q[h].children)
         h += 1
 
-    print("开始构建出入度树的prophecy...")
-    print("开始构建出入度树的prophecy...", file=statics.f_cons)
-    t_p_1 = time.clock()
-    # 梳理树中prophesy信息让节点包含其之下所有边标签,指导locate_node搜索
-    visited_stack = [0]
-    v_cri_stack = [0]
-    t_v_c = -1
-    t_v = -1
-    unvisited_stack = [root]
-    t_u = 0
-    u_cri_stack = [0]
-    t_u_c = 0  # 根节点就是一个critical point,等待pop,所以放入u_cri_stack
-    while t_u >= 0:
-        top = unvisited_stack[t_u]
-        # 先处理这个节点,初始化prophecy等于与其直接相连的label队列
-        top.prophesy = top.label_menu
-
-        # 准备从unvisited栈pop出来
-        if len(top.label_menu) > 0:  # 不是叶子节点
-            if u_cri_stack[t_u_c] == t_u:
-                t_v_c = safe_push(v_cri_stack, t_v_c, t_v + 1)
-                t_u_c -= 1
-            t_v = safe_push(visited_stack, t_v, top)
-            t_u -= 1
-
-            t_u_c = safe_push(u_cri_stack, t_u_c, t_u + 1)  # 将第一个被压入的子节点标记为新的critical point
-            for label in top.label_menu:
-                t_u = safe_push(unvisited_stack, t_u, top.children[label])
-
-        else:  # 是一个叶子节点
-            if u_cri_stack[t_u_c] == t_u:  # 是一个critical叶子节点,触发回调函数程序
-                t_u_c -= 1
-                while True:
-                    # 执行回调函数
-                    top_v = visited_stack[t_v]
-                    t_v -= 1
-                    for label in top_v.label_menu:
-                        top_v.prophesy = __mearge_array(top_v.prophesy, top_v.children[label].prophesy)
-                    if t_v < 0 or v_cri_stack[t_v_c] != t_v + 1:
-                        # visited_stack空了或者遇到不critical的点,终止pop动作
-                        break
-                    else:
-                        # 这依然是critical,继续pop
-                        t_v_c -= 1
-            else:
-                pass
-            t_u -= 1  # 将该点pop并不push进visited_stack直接丢弃
-
-    t_p_2 = time.clock()
-    print("构建出入度树的prophecy耗时 " + str(t_p_2 - t_p_1))
-    print("构建出入度构建出入度树的prophecy耗时树耗时 " + str(t_p_2 - t_p_1), file=statics.f_cons)
     return root
 
 
