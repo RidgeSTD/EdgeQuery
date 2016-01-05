@@ -1,27 +1,11 @@
-from copy import deepcopy
+import testfile2
+import testfile3
 
-from common import QueryBox
 
 def main():
-    a = QueryBox(0)
-    a.candidate = {2:[4]}
-    b = QueryBox(1)
-    b.candidate = deepcopy(a.candidate)
-    # b.candidate = a.candidate.copy()
-    # b.candidate[2].append(5)
-    print(a.candidate)
-
-
-
-
-def safea(stack, t, data):
-    new_t = t + 1
-    if len(stack) <= new_t:
-        print('extend!')
-        stack.extend([0 for i in range(0, min(len(stack), 1))])
-    stack[new_t] = data
-    return new_t
-
+    # testfile2.var = 3
+    testfile3.foo()
+    print(testfile2.var)
 
 
 if __name__ == "__main__":

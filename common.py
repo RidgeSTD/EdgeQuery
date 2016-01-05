@@ -9,6 +9,9 @@ VALID_CANDIDATE = 0
 ROOT_PATH = '/Users/alex/'
 
 
+
+
+
 class TreeNode:
     def __init__(self, data=None):
         if data is None:
@@ -16,8 +19,10 @@ class TreeNode:
         self.data = data
         self.children = {}
         self.label_menu = []
+        self.prophesy = []
 
     def add_child(self, edge, c_node):
+        statics.io_tree_node_count += 1  # TODO 调试!正式运行删除
         self.children[edge] = c_node
         self.label_menu.append(edge)
 

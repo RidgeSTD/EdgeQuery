@@ -14,7 +14,7 @@ def load_map():
     """
     print("开始加载文件...")
     print("开始加载文件...", file=statics.f_cons)
-    t_start_load_file = time.clock()
+    t_start_load_file = time.clock()  # timer
     l_in = {}
     l_out = {}
     l_in_menu = {}
@@ -59,16 +59,16 @@ def load_map():
         if edg not in l_out_menu[ori]:
             l_out_menu[ori].append(edg)
     f.close()
-    t_end_load_file = time.clock()
+    t_end_load_file = time.clock()  # timer
     print("结束加载文件...")
     print("结束加载文件...", file=statics.f_cons)
     print('加载文件耗时 ' + str(t_end_load_file - t_start_load_file))
     print('加载文件耗时 ' + str(t_end_load_file - t_start_load_file), file=statics.f_cons)
 
-    t_start_sort_raw_data = time.clock()
+    t_start_sort_raw_data = time.clock()  # timer
     __inner_sort(l_in, l_in_menu)
     __inner_sort(l_out, l_out_menu)
-    t_end_sort_raw_data = time.clock()
+    t_end_sort_raw_data = time.clock()  # timer
     print("原始数据内部排序耗时 " + str(t_end_sort_raw_data - t_start_sort_raw_data))
     print("原始数据内部排序耗时 " + str(t_end_sort_raw_data - t_start_sort_raw_data), file=statics.f_cons)
 
@@ -76,6 +76,9 @@ def load_map():
 
 
 def __inner_sort(arr, menu):
+    """
+    将点对应标签的对应点按照从小到大顺序排序
+    """
     for node in menu:
         menu[node].sort()
         for label in menu[node]:

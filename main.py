@@ -22,7 +22,7 @@ def main():
     for i in range(0, len(queries)):
         statics.ans_io_time = 0.0
         fo.write('for query ' + str(i) + ':\n')
-        t1 = time.clock()
+        t1 = time.clock()  # timer
         result = search_engine.entrance(in_tree=in_tree, out_tree=out_tree, twigs=queries[i], l_in=l_in, l_out=l_out,
                                         q_in=q_in[i], q_out=q_out[i], q_in_menu=q_in_menu[i], q_out_menu=q_out_menu[i],
                                         fo=fo)
@@ -30,7 +30,7 @@ def main():
             fo.write('no result\n')
             print('no result')
             print('no result', file=statics.f_cons)
-        t2 = time.clock()
+        t2 = time.clock()  # timer
         print("查询" + str(i) + "输出结果耗时 " + str(statics.ans_io_time))
         print("查询" + str(i) + "输出结果耗时 " + str(statics.ans_io_time), file=statics.f_cons)
         print("查询" + str(i) + "共计耗时 " + str(t2 - t1))

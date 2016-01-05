@@ -10,7 +10,7 @@ __author__ = 'alex'
 def compose_query(file_name=None):
     print("开始加载查询文件...")
     print("开始加载查询文件...", file=statics.f_cons)
-    t1 = time.clock()
+    t1 = time.clock()  # timer
 
     if file_name is None:
         file_name = ROOT_PATH + "queries.txt"
@@ -68,7 +68,7 @@ def compose_query(file_name=None):
                 q_out[q_counter + 1][ori] = []
                 q_out[q_counter + 1][ori].append((edg, des))
 
-        t3 = time.clock()
+        t3 = time.clock()  # timer
         while e_counter > 0:
             head = __find_head(degree=degree, flaged=flaged)
             m_twig = Twig(head=head)
@@ -78,11 +78,11 @@ def compose_query(file_name=None):
             flaged.add(head)
             e_counter -= (len(m_twig.in_edge) + len(m_twig.out_edge))
             queries[q_counter].append(m_twig)
-        t4 = time.clock()
+        t4 = time.clock()  # timer
         print('分割第' + str(len(queries)) + " 个查询耗时 " + str(t4 - t3))
         print('分割第' + str(len(queries)) + " 个查询耗时 " + str(t4 - t3), file=statics.f_cons)
 
-        t5 = time.clock()
+        t5 = time.clock()  # timer
         q_in_menu.append({})
         for node in q_in[q_counter]:
             q_in_menu_counter = {}
@@ -110,11 +110,11 @@ def compose_query(file_name=None):
             for label in q_out_menu_counter:
                 q_out_menu[q_counter][node].append((label, q_out_menu_counter[label]))
             q_out_menu[q_counter][node].sort(key=lambda x: x[0])
-        t6 = time.clock()
+        t6 = time.clock()  # timer
         print("统计查询信息耗时 " + str(t6 - t5))
         print("统计查询信息耗时 " + str(t6 - t5), file=statics.f_cons)
 
-        t2 = time.clock()
+        t2 = time.clock()  # timer
         print("加载查询共耗时 " + str(t2 - t1))
         print("加载查询共耗时 " + str(t2 - t1), file=statics.f_cons)
 

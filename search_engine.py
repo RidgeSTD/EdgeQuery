@@ -18,9 +18,9 @@ def entrance(in_tree, out_tree, twigs, l_in, l_out, q_in, q_out, q_in_menu, q_ou
         heads.append(twig.head)
     print("开始获取head映射...")
     print("开始获取head映射...", file=statics.f_cons)
-    t1 = time.clock()
+    t1 = time.clock()  # timer
     result = __get_head_map(in_tree, out_tree, heads, q_in, q_out, q_in_menu, q_out_menu)
-    t2 = time.clock()
+    t2 = time.clock()  # timer
     print("获取head映射耗时 " + str(t2 - t1))
     print("获取head映射耗时 " + str(t2 - t1), file=statics.f_cons)
     if result == common.INVALID_CANDIDATE:
@@ -30,13 +30,13 @@ def entrance(in_tree, out_tree, twigs, l_in, l_out, q_in, q_out, q_in_menu, q_ou
     t = 1
     print("查询内核启动...")
     print("查询内核启动...", file=statics.f_cons)
-    t3 = time.clock()
+    t3 = time.clock()  # timer
     while h < t:
         result = __core(l_in=l_in, l_out=l_out, box=querybox_list[h], twigs=twigs, fo=fo)
         querybox_list.extend(result)
         t += len(result)
         h += 1
-    t4 = time.clock()
+    t4 = time.clock()  # timer
     print("查询内核运行耗时 " + str(t4 - t3))
     print("查询内核运行耗时 " + str(t4 - t3), file=statics.f_cons)
 
@@ -152,10 +152,10 @@ def __print_ans(candidate, fo):
             buf[can_list[step]] = can
             iter(step + 1)
 
-    t1 = time.clock()
+    t1 = time.clock()  # timer
     can_list = list(candidate)
     ESC = len(can_list)
     buf = {}
     iter(0)
-    t2 = time.clock()
+    t2 = time.clock()  # timer
     statics.ans_io_time += (t2 - t1)
