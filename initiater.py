@@ -97,13 +97,13 @@ def __mearge_array(a1, a2):
     t = -1
     while p1 < l1 and p2 < l2:
         if a1[p1] < a2[p2]:
-            t = safe_push(tmp, t, a1[p1])
+            t = __safe_push(tmp, t, a1[p1])
             while True:
                 p1 += 1
                 if p1 >= l1 or a1[p1] > a1[p1 - 1]:
                     break
         elif a1[p1] == a2[p2]:
-            t = safe_push(tmp, t, a1[p1])
+            t = __safe_push(tmp, t, a1[p1])
             while True:
                 p1 += 1
                 if p1 >= l1 or a1[p1] > a1[p1 - 1]:
@@ -113,21 +113,21 @@ def __mearge_array(a1, a2):
                 if p2 >= l2 or a2[p2] > a2[p2 - 1]:
                     break
         else:
-            t = safe_push(tmp, t, a2[p2])
+            t = __safe_push(tmp, t, a2[p2])
             while True:
                 p2 += 1
                 if p2 >= l2 or a2[p2] > a2[p2 - 1]:
                     break
     while p1 < l1:
-        t = safe_push(tmp, t, a1[p1])
+        t = __safe_push(tmp, t, a1[p1])
         p1 += 1
     while p2 < l2:
-        t = safe_push(tmp, t, a2[p2])
+        t = __safe_push(tmp, t, a2[p2])
         p2 += 1
     return tmp[0: t + 1]
 
 
-def safe_push(stack, t, data):
+def __safe_push(stack, t, data):
     """
     take the input stack and the top pointer t
     double the size of stack if stack overflow

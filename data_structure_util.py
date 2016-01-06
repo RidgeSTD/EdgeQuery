@@ -1,10 +1,8 @@
-import time
-import queue
-
-
 class CQueue:
     """
-    An scalable circulate queue. Provide four basic options: put, get, is_empty and rescale.
+    An scalable circulate queue.
+
+    Basic optoration provided:put, get, is_empty, rescale, clear
     """
     def __init__(self):
         self.__q = [0]
@@ -29,7 +27,7 @@ class CQueue:
 
     def get(self):
         """
-        Pop the first element in the list, pop *None* if the list is empty.
+        Pop the first element in the queue, pop *None* if the queue is empty.
         """
         if self.__is_empty:
             return None
@@ -41,13 +39,13 @@ class CQueue:
 
     def is_empty(self):
         """
-        Return whether the list is empty.
+        Return whether the queue is empty.
         """
         return self.__is_empty
 
     def rescale(self):
         """
-        Resize the inner list acording to number of current elements in list. If there is *N* elements, the list then
+        Resize the inner queue acording to number of current elements in queue. If there is *N* elements, the queue then
         would be *N+1* long
         """
         if self.__is_empty:
@@ -68,22 +66,9 @@ class CQueue:
         self.__f = 0
         self.__r = len(tmp) - 1
 
-
-def main():
-    q = CQueue()
-    for i in range(0, 2):
-        q.put(i)
-    q.get()
-    q.get()
-    q.rescale()
-    q.put(6)
-    q.put(7)
-
-    q.put(100)
-    q.rescale()
-    q.put(123)
-    q.rescale()
-    i = 2
-
-if __name__ == "__main__":
-    main()
+    def clear(self, resize=False):
+        self.__f = 0
+        self.__r = 0
+        if resize:
+            self.__q = [0]
+            self.__size = 1

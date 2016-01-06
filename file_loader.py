@@ -2,6 +2,8 @@ import time
 
 import statics
 from common import ROOT_PATH
+from common import NeighborInfo
+from data_structure_util import CQueue
 
 __author__ = 'alex'
 
@@ -72,7 +74,38 @@ def load_map():
     print("原始数据内部排序耗时 " + str(t_end_sort_raw_data - t_start_sort_raw_data))
     print("原始数据内部排序耗时 " + str(t_end_sort_raw_data - t_start_sort_raw_data), file=statics.f_cons)
 
-    return l_in, l_out, l_in_menu, l_out_menu, node_set
+    # 统计邻居节点信息
+    neibor = {}
+    # 先统计入度
+    visited = set()
+    q_node = CQueue()
+    q_dep = CQueue()
+    for node in node_set:
+        visited.clear()
+        visited.add(node)
+        neibor[node] = NeighborInfo()
+        q_node.clear()
+        q_dep.clear()
+        q_node.put(node)
+        q_dep.put(0)
+        while not q_node.is_empty():
+            x_node = q_node.get()
+            x_dep = q_dep.get()
+            next_dep = x_dep + 1
+            if x_node not in l_in:
+                continue
+            for l in l_in[x_node]:
+                for ori in l_in[x_node][l]:
+                    if ori not in visited:
+                        neibor[node].safe_add(ori, statics.fade_factor_pow[next_dep], target='in')
+                        visited.add(ori)
+                        if next_dep < statics.neighbor_threshold:
+                            q_node.put(ori)
+                            q_dep.put(next_dep)
+        neibor[node].in_nodes_label.sort()
+    # 先不统计出度
+
+    return l_in, l_out, l_in_menu, l_out_menu, node_set, neibor
 
 
 def __inner_sort(arr, menu):

@@ -1,4 +1,5 @@
 import statics
+import data_structure_util
 
 __author__ = 'alex'
 
@@ -7,9 +8,6 @@ INVALID_CANDIDATE = -999
 VALID_CANDIDATE = 0
 
 ROOT_PATH = '/Users/alex/'
-
-
-
 
 
 class TreeNode:
@@ -159,3 +157,29 @@ class QueryBox:
         if filter_afterwards:
             return self.filter()
         return None
+
+
+class NeighborInfo:
+    """
+    记录每个节点的邻居信息,包括in_nodes, in_nodes_label, <s>out_nodes</s>, <s>out_nodes_label</s>
+    """
+    def __init__(self):
+        self.in_nodes = {}
+        self.in_nodes_label = []
+        # out_nodes = {}
+        # out_nodes_label = []
+
+    def safe_add(self, node, data, target='in'):
+        if target == 'in':
+            if node not in self.in_nodes_label:
+                self.in_nodes_label.append(node)
+                self.in_nodes[node] = data
+            else:
+                self.in_nodes[node] += data
+        else:
+            pass
+            # if node in self.in_nodes_label:
+            #     self.out_nodes_label.append(node)
+            #     self.out_nodes[node] - data
+            # else:
+            #     self.out_nodes[node] += data

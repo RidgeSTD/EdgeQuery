@@ -12,11 +12,12 @@ ans_io_time = 0.0
 
 
 def main():
+    __init_statics()
     fo = open(common.ROOT_PATH + 'answer.txt', 'a')
     statics.f_cons = open(common.ROOT_PATH + 'console.txt', mode='a', encoding='utf-8')
     print("hello world!")
     print("hello world!", file=statics.f_cons)
-    l_in, l_out, l_in_menu, l_out_menu, node_set = file_loader.load_map()
+    l_in, l_out, l_in_menu, l_out_menu, node_set, neighbor = file_loader.load_map()
     in_tree, out_tree = initiater.init_in_out_tree(l_in, l_out, l_in_menu, l_out_menu, node_set)
     queries, q_in, q_out, q_in_menu, q_out_menu = query_composer.compose_query()
     for i in range(0, len(queries)):
@@ -37,6 +38,12 @@ def main():
         print("查询" + str(i) + "共计耗时 " + str(t2 - t1), file=statics.f_cons)
         fo.write('\n\n')
     fo.close()
+
+
+def __init_statics():
+    statics.fade_factor_pow = [1]
+    for i in range(1, statics.neighbor_threshold + 1):
+        statics.fade_factor_pow.append(statics.fade_factor_pow[i - 1] * statics.fade_factor)
 
 
 if __name__ == "__main__":
