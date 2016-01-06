@@ -1,9 +1,11 @@
+import time
+import os
+
 import common
 import file_loader
 import initiater
 import query_composer
 import search_engine
-import time
 import statics
 
 __author__ = 'alex'
@@ -13,12 +15,18 @@ ans_io_time = 0.0
 
 def main():
     __init_statics()
+    if os.path.isfile(common.ROOT_PATH + 'answer.txt'):
+        os.remove(common.ROOT_PATH + 'answer.txt')
+
+    if os.path.isfile(common.ROOT_PATH + 'console.txt'):
+        os.remove(common.ROOT_PATH + 'console.txt')
+
     fo = open(common.ROOT_PATH + 'answer.txt', 'a')
     statics.f_cons = open(common.ROOT_PATH + 'console.txt', mode='a', encoding='utf-8')
     print("hello world!")
     print("hello world!", file=statics.f_cons)
     l_in, l_out, l_in_menu, l_out_menu, node_set, neighbor = file_loader.load_map()
-    in_tree, out_tree = initiater.init_in_out_tree(l_in, l_out, l_in_menu, l_out_menu, node_set)
+    in_tree, out_tree = initiater.init_in_out_tree(l_in, l_out, l_in_menu, l_out_menu, node_set, neighbor)
     queries, q_in, q_out, q_in_menu, q_out_menu = query_composer.compose_query()
     for i in range(0, len(queries)):
         statics.ans_io_time = 0.0

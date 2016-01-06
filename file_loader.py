@@ -74,9 +74,11 @@ def load_map():
     print("原始数据内部排序耗时 " + str(t_end_sort_raw_data - t_start_sort_raw_data))
     print("原始数据内部排序耗时 " + str(t_end_sort_raw_data - t_start_sort_raw_data), file=statics.f_cons)
 
+    print("开始统计邻居信息")
+    print("开始统计邻居信息", file=statics.f_cons)
     t_start_neighbor = time.clock()  # timer
     # 统计邻居节点信息
-    neibor = {}
+    neighbor = {}
     # 先统计入度
     visited = set()
     q_node = CQueue()
@@ -84,7 +86,7 @@ def load_map():
     for node in node_set:
         visited.clear()
         visited.add(node)
-        neibor[node] = NeighborInfo()
+        neighbor[node] = NeighborInfo()
         q_node.clear()
         q_dep.clear()
         q_node.put(node)
@@ -98,18 +100,18 @@ def load_map():
             for l in l_in[x_node]:
                 for ori in l_in[x_node][l]:
                     if ori not in visited:
-                        neibor[node].safe_add(ori, statics.fade_factor_pow[next_dep], target='in')
+                        neighbor[node].safe_add(ori, statics.fade_factor_pow[next_dep], target='in')
                         visited.add(ori)
                         if next_dep < statics.neighbor_threshold:
                             q_node.put(ori)
                             q_dep.put(next_dep)
-        neibor[node].in_nodes_label.sort()
+        neighbor[node].cal_module_sort_menu(target='in')
     # 先不统计出度
     t_end_neighbor = time.clock()  # timer
     print("统计邻居信息耗时 " + str(t_end_neighbor - t_start_neighbor))
     print("统计邻居信息耗时 " + str(t_end_neighbor - t_start_neighbor), file=statics.f_cons)
 
-    return l_in, l_out, l_in_menu, l_out_menu, node_set, neibor
+    return l_in, l_out, l_in_menu, l_out_menu, node_set, neighbor
 
 
 def __inner_sort(arr, menu):

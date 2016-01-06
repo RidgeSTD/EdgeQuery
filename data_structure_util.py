@@ -55,7 +55,7 @@ class CQueue:
             self.__f = 0
             return
         if self.__r > self.__f:
-            tmp = self.__q[self.__f, self.__r]
+            tmp = self.__q[self.__f: self.__r]
             tmp.append(0)
         else:
             tmp = [0 for i in range(0, self.__size - self.__f + self.__r + 1)]
@@ -72,3 +72,10 @@ class CQueue:
         if resize:
             self.__q = [0]
             self.__size = 1
+
+    def get_queue_copy(self):
+        """
+        Get a copy of uncirculated version the inner queue.
+        """
+        self.rescale()
+        return self.__q[0: self.__size - 1]
