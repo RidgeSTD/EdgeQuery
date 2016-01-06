@@ -3,6 +3,7 @@ import time
 
 import common
 import statics
+from data_structure_util import CQueue
 __author__ = 'alex'
 
 head_map = None
@@ -25,17 +26,16 @@ def entrance(in_tree, out_tree, twigs, l_in, l_out, q_in, q_out, q_in_menu, q_ou
     print("获取head映射耗时 " + str(t2 - t1), file=statics.f_cons)
     if result == common.INVALID_CANDIDATE:
         return common.INVALID_CANDIDATE
-    querybox_list = [common.QueryBox(0)]
-    h = 0
-    t = 1
+    querybox_list = CQueue()
+    querybox_list.put(common.QueryBox(0))
     print("查询内核启动...")
     print("查询内核启动...", file=statics.f_cons)
     t3 = time.clock()  # timer
-    while h < t:
-        result = __core(l_in=l_in, l_out=l_out, box=querybox_list[h], twigs=twigs, fo=fo)
-        querybox_list.extend(result)
-        t += len(result)
-        h += 1
+    while not querybox_list.is_empty():
+        x_box = querybox_list.get()
+        result = __core(l_in=l_in, l_out=l_out, box=x_box, twigs=twigs, fo=fo)
+        for each in result:
+            querybox_list.put(each)
     t4 = time.clock()  # timer
     print("查询内核运行耗时 " + str(t4 - t3))
     print("查询内核运行耗时 " + str(t4 - t3), file=statics.f_cons)
@@ -73,30 +73,27 @@ def __locate_node(head, q_edge, q_menu, tree):
     if head not in q_menu:
         return [tree]
 
-    q = [block(cursor=tree, step=(0, 1))]
+    que = CQueue()
+    que.put(block(cursor=tree, step=(0, 1)))
     ans_list = []
-    h = 0
-    t = 0
     ESC = len(q_menu[head])
-    while h <= t:
-        q_label = q_menu[head][q[h].step[0]][0]
-        for i in range(0, len(q[h].cursor.label_menu)):
-            tree_label = q[h].cursor.label_menu[i]
+    while not que.is_empty():
+        x_node = que.get()
+        q_label = q_menu[head][x_node.step[0]][0]
+        for i in range(0, len(x_node.cursor.label_menu)):
+            tree_label = x_node.cursor.label_menu[i]
             if tree_label > q_label:
                 break
             elif tree_label == q_label:
-                if q[h].step[0] == ESC - 1 and q[h].step[1] >= q_menu[head][q[h].step[0]][1]:
-                    ans_list.append(q[h].cursor.children[tree_label])
+                if x_node.step[0] == ESC - 1 and x_node.step[1] >= q_menu[head][x_node.step[0]][1]:
+                    ans_list.append(x_node.cursor.children[tree_label])
                     continue
-                if q[h].step[1] >= q_menu[head][q[h].step[0]][1]:
-                    q.append(block(cursor=q[h].cursor.children[tree_label], step=(q[h].step[0] + 1, 1)))
+                if x_node.step[1] >= q_menu[head][x_node.step[0]][1]:
+                    que.put(block(cursor=x_node.cursor.children[tree_label], step=(x_node.step[0] + 1, 1)))
                 else:
-                    q.append(block(cursor=q[h].cursor.children[tree_label], step=(q[h].step[0], q[h].step[1] + 1)))
-                t += 1
+                    que.put(block(cursor=x_node.cursor.children[tree_label], step=(x_node.step[0], x_node.step[1] + 1)))
             else:
-                q.append(block(cursor=q[h].cursor.children[tree_label], step=q[h].step))
-                t += 1
-        h += 1
+                que.put(block(cursor=x_node.cursor.children[tree_label], step=x_node.step))
     if not ans_list:
         return common.INVALID_CANDIDATE
     else:

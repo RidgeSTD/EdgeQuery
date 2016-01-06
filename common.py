@@ -1,5 +1,5 @@
 import statics
-import data_structure_util
+from data_structure_util import CQueue
 
 __author__ = 'alex'
 
@@ -103,7 +103,7 @@ class QueryBox:
         if null set caused, return common.INVALIDATE_CANDIDAT
         :return:
         """
-        pipe_line = []
+        pipe_line = CQueue()
         for node in self.candidate:
             if len(self.candidate[node]) == 1:
                 griddle = None
@@ -119,32 +119,28 @@ class QueryBox:
                             if new_len < 1:
                                 return INVALID_CANDIDATE
                             if new_len == 1:
-                                pipe_line.append(other)
+                                pipe_line.put(other)
                         except:
                             pass
 
-        h = 0
-        r = len(pipe_line)
-        while h < r:
+        while not pipe_line.is_empty():
             griddle = None
-            for each in self.candidate[pipe_line[h]]:
+            x_node = pipe_line.get()
+            for each in self.candidate[x_node]:
                 griddle = each
             if griddle is None:
                 return INVALID_CANDIDATE
             for other in self.candidate:
-                if other != pipe_line[h]:
+                if other != x_node:
                     try:
                         self.candidate[other].remove(griddle)
                         new_len = len(self.candidate[other])
                         if new_len < 1:
                             return INVALID_CANDIDATE
                         if new_len == 1:
-                            pipe_line.append(other)
-                            r += 1
+                            pipe_line.put(other)
                     except:
                         pass
-
-            h += 1
 
         return VALID_CANDIDATE
 

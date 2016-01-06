@@ -1,6 +1,8 @@
 import statics
-from common import TreeNode
 import time
+
+from common import TreeNode
+from data_structure_util import CQueue
 
 __author__ = 'alex'
 
@@ -68,15 +70,13 @@ def __build_tree(table, menu, node_set):
         pin.data.append(node)
 
     # 梳理树中的目录信息
-    q = [root]
-    h = 0
-    t = 0
-    while h <= t:
-        q[h].label_menu.sort()
-        for edge in q[h].children:
-            q.append(q[h].children[edge])
-        t += len(q[h].children)
-        h += 1
+    q = CQueue()
+    q.put(root)
+    while not q.is_empty():
+        x_node = q.get()
+        x_node.label_menu.sort()
+        for edge in x_node.children:
+            q.put(x_node.children[edge])
 
     return root
 
