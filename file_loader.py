@@ -74,6 +74,7 @@ def load_map():
     print("原始数据内部排序耗时 " + str(t_end_sort_raw_data - t_start_sort_raw_data))
     print("原始数据内部排序耗时 " + str(t_end_sort_raw_data - t_start_sort_raw_data), file=statics.f_cons)
 
+    t_start_neighbor = time.clock()  # timer
     # 统计邻居节点信息
     neibor = {}
     # 先统计入度
@@ -104,6 +105,9 @@ def load_map():
                             q_dep.put(next_dep)
         neibor[node].in_nodes_label.sort()
     # 先不统计出度
+    t_end_neighbor = time.clock()  # timer
+    print("统计邻居信息耗时 " + str(t_end_neighbor - t_start_neighbor))
+    print("统计邻居信息耗时 " + str(t_end_neighbor - t_start_neighbor), file=statics.f_cons)
 
     return l_in, l_out, l_in_menu, l_out_menu, node_set, neibor
 

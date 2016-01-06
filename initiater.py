@@ -64,7 +64,7 @@ def __build_tree(table, menu, node_set):
                     pin.add_child(label, child)
                     pin = child
                 else:
-                    pin = pin.children[label]
+                    pin = pin. children[label]
         pin.data.append(node)
 
     # 梳理树中的目录信息
