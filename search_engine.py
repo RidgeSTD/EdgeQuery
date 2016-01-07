@@ -1,5 +1,6 @@
 import copy
 import time
+import cProfile
 
 import common
 import statics
@@ -10,7 +11,7 @@ head_map = None
 END = 0
 
 
-def entrance(in_tree, out_tree, twigs, l_in, l_out, q_in, q_out, q_in_menu, q_out_menu, fo):
+def entrance(in_tree, out_tree, twigs, l_in, l_out, node_set, q_in, q_out, q_in_menu, q_out_menu, fo):
     global head_map, END
 
     heads = []
@@ -24,6 +25,10 @@ def entrance(in_tree, out_tree, twigs, l_in, l_out, q_in, q_out, q_in_menu, q_ou
     t2 = time.clock()  # timer
     print("获取head映射耗时 " + str(t2 - t1))
     print("获取head映射耗时 " + str(t2 - t1), file=statics.f_cons)
+
+    # 对照, 朴素的head获取方法
+    __naive_get_head_map(l_in, l_out, node_set, heads, q_in, q_out)
+
     if result == common.INVALID_CANDIDATE:
         return common.INVALID_CANDIDATE
     querybox_list = CQueue()
@@ -64,6 +69,35 @@ def __get_head_map(in_tree, out_tree, heads, q_in, q_out, q_in_menu, q_out_menu)
     return head_map
 
 
+def __naive_get_head_map(l_in, l_out, node_set, heads, q_in, q_out):
+    print("naive的head查询开始...")
+    print("naive的head查询开始...", file=statics.f_cons)
+    t_st_naive = time.clock()
+    n_head_map = {}
+    for head in heads:
+        n_head_map[head] = set()
+        for node in node_set:
+            flag = True
+            if head in q_in:
+                for l in q_in[head]:
+                    if node not in l_in or l not in l_in[node] or l_in[node] < q_in[head]:
+                        flag = False
+                        break
+            if head in q_out:
+                for l in q_out[head]:
+                    if node not in l_out or l not in l_out[node] or l_out[node] < q_out[head]:
+                        flag = False
+                        break
+            if flag:
+                n_head_map[head].add(node)
+    t_en_naive = time.clock()
+    print("naive的head查询运行耗时 " + str(t_en_naive - t_st_naive))
+    print("naive的head查询运行耗时 " + str(t_en_naive - t_st_naive), file=statics.f_cons)
+
+
+
+
+
 def __locate_node(head, q_edge, q_menu, tree):
     class block:
         def __init__(self, cursor, step):
@@ -72,6 +106,9 @@ def __locate_node(head, q_edge, q_menu, tree):
 
     if head not in q_menu:
         return [tree]
+
+    statics.locate_called_time += 1
+    tt1 = time.clock()
 
     que = CQueue()
     que.put(block(cursor=tree, step=(0, 1)))
@@ -94,6 +131,8 @@ def __locate_node(head, q_edge, q_menu, tree):
                     que.put(block(cursor=x_node.cursor.children[tree_label], step=(x_node.step[0], x_node.step[1] + 1)))
             else:
                 que.put(block(cursor=x_node.cursor.children[tree_label], step=x_node.step))
+
+    statics.located_run_time += time.clock() - tt1
     if not ans_list:
         return common.INVALID_CANDIDATE
     else:
