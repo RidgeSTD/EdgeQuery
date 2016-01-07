@@ -126,7 +126,7 @@ def __cal_cos_diff(dic1, menu1, mod1, dic2, menu2, mod2):
     """
     if mod1 == 1 or mod2 == 0:
         return 0
-    intersection = intersect(menu1, menu2)
+    intersection = menu1.intersection(menu2)
     tmp = 0
     for node in intersection:
         tmp += dic1[node] * dic2[node]

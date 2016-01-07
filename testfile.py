@@ -1,30 +1,56 @@
 import math
 import copy
-
-def __dimidiate_search(val, l, r, arr):
-    st = l - 1
-    en = r + 1
-    while st < en - 1:
-        mid = math.floor((st + en)/2)
-        if arr[mid] < val:
-            st = mid
-        else:
-            en = mid
-    return en
+from time import clock
+import common
 
 
 def main():
-    a = [1, 2, 3, 4, 5]
-    # print(__dimidiate_search(0, 0, 4, a))
-    tmp = copy.deepcopy(a[2:5])
-    tmp2 = a[0:5]
-    print(tmp)
-    print(id(a))
-    print(id(tmp))
-    print(id(tmp2))
-    print(id(a[2:5]))
-    a[2] = 200
-    print(tmp2)
+    b = [1, 2, 3, 4, 8, 9, 10, 11]
+    c = [1, 2, 3, 4, 8, 9, 10, 11]
+    a = [7, 100, 101, 102]
+    d = [7, 100, 101, 102]
+    sa = set(a)
+    sb = set(b)
+    aa = 0
+    print('===========循环访问=============')
+    t1 = clock()
+    for i in range(1, 10000):
+        for j in range(0, len(a)):
+            t = a[j]
+        for j in range(0, len(b)):
+            t = b[j]
+        aa = t
+    print(clock() - t1)
+    print('===========extend=============')
+    t1 = clock()
+    for i in range(1, 10000):
+        c.extend(d)
+        c = [1, 2, 3, 4, 8, 9, 10, 11]
+    print(clock() - t1)
+    print('==========我并系统并==============')
+    t1 = clock()
+    for i in range(1, 10000):
+        common.union(a, b)
+    print(clock() - t1)
+
+    t1 = clock()
+    for i in range(1, 10000):
+        sa = set(a)
+        sb = set(b)
+        sa.union(sb)
+    print(clock() - t1)
+    print('========我交系统交================')
+    t1 = clock()
+    for i in range(1, 10000):
+        common.intersect(a, b)
+    print(clock() - t1)
+
+    t1 = clock()
+    for i in range(1, 10000):
+        sa = set(a)
+        sb = set(b)
+        sa.intersection(sb)
+    print(clock() - t1)
 
 
 if __name__ == "__main__":

@@ -1,11 +1,13 @@
+import copy
+
 class CQueue:
     """
     An scalable circulate queue.
 
     Basic optoration provided:put, get, is_empty, rescale, clear
     """
-    def __init__(self):
-        self.__q = [0]
+    def __init__(self, data=[0]):
+        self.__q = copy.deepcopy(data)
         self.__f = 0
         self.__r = 0
         self.__size = 1
@@ -79,3 +81,23 @@ class CQueue:
         """
         self.rescale()
         return self.__q[0: self.__size - 1]
+
+    def extend(self, t):
+        """
+        Uncirculate if necessary then extend the inner queue by given *t*.
+        """
+        lt = len(t)
+        if lt < 1:
+            return
+        if self.__r <= self.__f:
+            self.rescale()
+        if self.__size - self.__r > lt:
+            self.__q[self.__r: self.__r + lt] = t[0: lt]
+            self.__r = (self.__r + lt) % self.__size
+            self.__is_empty = False
+        else:
+            self.__q[self.__r: self.__size] = t[0: self.__size - self.__r]
+            self.__q.extend(t[self.__size - self.__r: lt])
+            self.__r = 0
+            self.__size = len(self.__q)
+            self.__is_empty = False

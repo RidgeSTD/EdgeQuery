@@ -105,7 +105,7 @@ def load_map():
                         if next_dep < statics.neighbor_threshold:
                             q_node.put(ori)
                             q_dep.put(next_dep)
-        neighbor[node].cal_module_sort_menu(target='in')
+        neighbor[node].cal_module(target='in')
     # 先不统计出度
     t_end_neighbor = time.clock()  # timer
     print("统计邻居信息耗时 " + str(t_end_neighbor - t_start_neighbor))
