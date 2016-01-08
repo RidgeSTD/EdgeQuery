@@ -11,6 +11,10 @@ locate_called_time = 0
 
 located_run_time = 0
 
+locate_dfs_recirsive_call = 0
+
+io_tree_max_dep = 0
+
 # ====== factors =======
 
 neighbor_threshold = 1

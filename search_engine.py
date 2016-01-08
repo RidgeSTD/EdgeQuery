@@ -1,14 +1,15 @@
 import copy
 import time
 import cProfile
-
 import common
 import statics
 from data_structure_util import CQueue
+
 __author__ = 'alex'
 
 head_map = None
 END = 0
+dfs_exit = 0
 
 
 def entrance(in_tree, out_tree, twigs, l_in, l_out, node_set, q_in, q_out, q_in_menu, q_out_menu, fo):
@@ -95,48 +96,49 @@ def __naive_get_head_map(l_in, l_out, node_set, heads, q_in, q_out):
     print("naive的head查询运行耗时 " + str(t_en_naive - t_st_naive), file=statics.f_cons)
 
 
-
-
-
 def __locate_node(head, q_edge, q_menu, tree):
-    class block:
-        def __init__(self, cursor, step):
-            self.cursor = cursor
-            self.step = step
-
-    if head not in q_menu:
-        return [tree]
+    global dfs_exit
 
     statics.locate_called_time += 1
+    statics.locate_dfs_recirsive_call = 0
     tt1 = time.clock()
+    if head not in q_menu:
+        return [tree]
+    dfs_exit = len(q_menu[head])
+    result = __dfs_locate_node(x=tree, step=0, step_count=1, q_edge=q_edge, q_menu=q_menu, head=head)
 
-    que = CQueue()
-    que.put(block(cursor=tree, step=(0, 1)))
-    ans_list = []
-    ESC = len(q_menu[head])
-    while not que.is_empty():
-        x_node = que.get()
-        q_label = q_menu[head][x_node.step[0]][0]
-        for i in range(0, len(x_node.cursor.label_menu)):
-            tree_label = x_node.cursor.label_menu[i]
-            if tree_label > q_label:
-                break
-            elif tree_label == q_label:
-                if x_node.step[0] == ESC - 1 and x_node.step[1] >= q_menu[head][x_node.step[0]][1]:
-                    ans_list.append(x_node.cursor.children[tree_label])
-                    continue
-                if x_node.step[1] >= q_menu[head][x_node.step[0]][1]:
-                    que.put(block(cursor=x_node.cursor.children[tree_label], step=(x_node.step[0] + 1, 1)))
-                else:
-                    que.put(block(cursor=x_node.cursor.children[tree_label], step=(x_node.step[0], x_node.step[1] + 1)))
-            else:
-                que.put(block(cursor=x_node.cursor.children[tree_label], step=x_node.step))
-
+    print("本次locate_dfs递归次数:" + str(statics.locate_dfs_recirsive_call))
+    print("本次locate_dfs递归次数:" + str(statics.locate_dfs_recirsive_call), file=statics.f_cons)
     statics.located_run_time += time.clock() - tt1
-    if not ans_list:
+    if not result:
         return common.INVALID_CANDIDATE
-    else:
-        return ans_list
+    return result
+
+
+def __dfs_locate_node(x, step, step_count, q_edge, q_menu, head):
+    global dfs_exit
+
+    statics.locate_dfs_recirsive_call += 1
+
+    if step >= dfs_exit:
+        return set({x})
+    if not x.label_menu:
+        return set()
+
+    result = set()
+
+    for l in x.label_menu:
+        if l > q_menu[head][step][0]:
+            break
+        elif l == q_menu[head][step][0]:
+            if step_count == q_menu[head][step][1]:
+                result.update(__dfs_locate_node(x.children[l], step + 1, 1, q_edge, q_menu, head))
+            else:
+                result.update(__dfs_locate_node(x.children[l], step, step_count + 1, q_edge, q_menu, head))
+        elif q_menu[head][step][0] in x.children[l].prophecy:
+            result.update(__dfs_locate_node(x.children[l], step, step_count, q_edge, q_menu, head))
+
+    return result
 
 
 def __core(l_in, l_out, box, twigs, fo):

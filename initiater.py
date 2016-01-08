@@ -85,7 +85,36 @@ def __build_tree(table, menu, node_set, neighbor):
     print("差异化出入度表耗时 " + str(t_end_intervein - t_start_intervein))
     print("差异化出入度表耗时 " + str(t_end_intervein - t_start_intervein), file=statics.f_cons)
 
+
+    print("开始计算prophecy...")
+    print("开始计算prophecy...", file=statics.f_cons)
+    t_start_prophecy = time.clock()
+    __dfs_for_prophecy(root)
+    t_end_prophecy = time.clock()
+    print("计算prophecy耗时: " + str(t_end_prophecy - t_start_prophecy))
+    print("计算prophecy耗时: " + str(t_end_prophecy - t_start_prophecy), file=statics.f_cons)
+
+    print("开始深先遍历出入度树...")
+    print("开始深先遍历出入度树...", file=statics.f_cons)
+    statics.io_tree_max_dep = -1
+    dfs_for_depth(root, 1)
+    print("得到最大深度:" + str(statics.io_tree_max_dep))
+    print("得到最大深度:" + str(statics.io_tree_max_dep), file=statics.f_cons)
     return root
+
+
+def dfs_for_depth(x, dep):
+    if dep > statics.io_tree_max_dep:
+        statics.io_tree_max_dep = dep
+    for l in x.children:
+        dfs_for_depth(x.children[l], dep + 1)
+
+
+def __dfs_for_prophecy(x):
+    x.prophecy = set(x.label_menu)
+    for l in x.label_menu:
+        __dfs_for_prophecy(x.children[l])
+        x.prophecy.update(x.children[l].prophecy)
 
 
 def __intervein_node(node_list, neighbor):

@@ -4,6 +4,8 @@ from time import clock
 import common
 import test2
 import cProfile
+import time
+import timeit
 
 
 def foo(x):
@@ -14,7 +16,9 @@ def foo(x):
 
 
 def main():
-    foo(1)
+    b = set([1, 2, 3])
+    print(b)
+    print(2 in b)
 
 
 if __name__ == "__main__":

@@ -35,10 +35,6 @@ def main():
         fo.write('for query ' + str(i) + ':\n')
         t1 = time.clock()  # timer
 
-        stm = "result = search_engine.entrance(in_tree=in_tree, out_tree=out_tree, twigs=queries[i], l_in=l_in, " \
-              "l_out=l_out,q_in=q_in[i], q_out=q_out[i], q_in_menu=q_in_menu[i], q_out_menu=q_out_menu[i],fo=fo," \
-              " node_set=node_set)"
-
         result = search_engine.entrance(in_tree=in_tree, out_tree=out_tree, twigs=queries[i], l_in=l_in, l_out=l_out,
                                         q_in=q_in[i], q_out=q_out[i], q_in_menu=q_in_menu[i], q_out_menu=q_out_menu[i],
                                         fo=fo, node_set=node_set)

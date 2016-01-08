@@ -144,7 +144,7 @@ class TreeNode:
         self.data = data
         self.children = {}
         self.label_menu = []
-        self.prophesy = []
+        self.prophecy = set()
 
     def add_child(self, edge, c_node):
         statics.io_tree_node_count += 1  # TODO 调试!正式运行删除
