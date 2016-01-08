@@ -15,7 +15,7 @@ def init_in_out_tree(l_in, l_out, l_in_menu, l_out_menu, node_set, neighbor):
 
 def __build_in_out_table(l_in, l_out, l_in_menu, l_out_menu):
     print("开始构建出入度表...")
-    print("开始构建出入度表...", file=statics.f_cons)
+    print("开始构建出入度表...", file=statics.f_console)
     t1 = time.clock()  # timer
     in_table = {}
     out_table = {}
@@ -29,22 +29,22 @@ def __build_in_out_table(l_in, l_out, l_in_menu, l_out_menu):
             out_table[node][label] = len(l_out[node][label])
     t2 = time.clock()  # timer
     print("构建出入度表耗时 " + str(t2 - t1))
-    print("构建出入度表耗时 " + str(t2 - t1), file=statics.f_cons)
+    print("构建出入度表耗时 " + str(t2 - t1), file=statics.f_console)
     return in_table, out_table
 
 
 def __build_in_out_tree(in_table, out_table, l_in_menu, l_out_menu, node_set, neighbor):
     print("开始构建出入度树...")
-    print("开始构建出入度树...", file=statics.f_cons)
+    print("开始构建出入度树...", file=statics.f_console)
     t1 = time.clock()  # timer
     statics.io_tree_node_count = 0
     in_tree = __build_tree(in_table, l_in_menu, node_set, neighbor)
     out_tree = __build_tree(out_table, l_out_menu, node_set, neighbor)
     t2 = time.clock()  # timer
     print("构建出入度树耗时 " + str(t2 - t1))
-    print("构建出入度树耗时 " + str(t2 - t1), file=statics.f_cons)
+    print("构建出入度树耗时 " + str(t2 - t1), file=statics.f_console)
     print("出入度树节点数共计 " + str(statics.io_tree_node_count + 1))
-    print("出入度树节点数共计 " + str(statics.io_tree_node_count + 1), file=statics.f_cons)
+    print("出入度树节点数共计 " + str(statics.io_tree_node_count + 1), file=statics.f_console)
     return in_tree, out_tree
 
 
@@ -70,7 +70,7 @@ def __build_tree(table, menu, node_set, neighbor):
         pin.data.append(node)
 
     print("开始调整出入度树以最大化差异...")
-    print("开始调整出入度树以最大化差异...", file=statics.f_cons)
+    print("开始调整出入度树以最大化差异...", file=statics.f_console)
     # 梳理树中的目录信息, 并根据邻居信息将树中同一树节点上的点按照最大novelty间隔排开
     q = CQueue()
     q.put(root)
@@ -83,23 +83,23 @@ def __build_tree(table, menu, node_set, neighbor):
             q.put(x_node.children[edge])
     t_end_intervein = time.clock()
     print("差异化出入度表耗时 " + str(t_end_intervein - t_start_intervein))
-    print("差异化出入度表耗时 " + str(t_end_intervein - t_start_intervein), file=statics.f_cons)
+    print("差异化出入度表耗时 " + str(t_end_intervein - t_start_intervein), file=statics.f_console)
 
 
     print("开始计算prophecy...")
-    print("开始计算prophecy...", file=statics.f_cons)
+    print("开始计算prophecy...", file=statics.f_console)
     t_start_prophecy = time.clock()
     __dfs_for_prophecy(root)
     t_end_prophecy = time.clock()
     print("计算prophecy耗时: " + str(t_end_prophecy - t_start_prophecy))
-    print("计算prophecy耗时: " + str(t_end_prophecy - t_start_prophecy), file=statics.f_cons)
+    print("计算prophecy耗时: " + str(t_end_prophecy - t_start_prophecy), file=statics.f_console)
 
     print("开始深先遍历出入度树...")
-    print("开始深先遍历出入度树...", file=statics.f_cons)
+    print("开始深先遍历出入度树...", file=statics.f_console)
     statics.io_tree_max_dep = -1
     dfs_for_depth(root, 1)
     print("得到最大深度:" + str(statics.io_tree_max_dep))
-    print("得到最大深度:" + str(statics.io_tree_max_dep), file=statics.f_cons)
+    print("得到最大深度:" + str(statics.io_tree_max_dep), file=statics.f_console)
     return root
 
 

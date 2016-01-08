@@ -20,12 +20,12 @@ def entrance(in_tree, out_tree, twigs, l_in, l_out, node_set, q_in, q_out, q_in_
     for twig in twigs:
         heads.append(twig.head)
     print("开始获取head映射...")
-    print("开始获取head映射...", file=statics.f_cons)
+    print("开始获取head映射...", file=statics.f_console)
     t1 = time.clock()  # timer
     result = __get_head_map(in_tree, out_tree, heads, q_in, q_out, q_in_menu, q_out_menu)
     t2 = time.clock()  # timer
     print("获取head映射耗时 " + str(t2 - t1))
-    print("获取head映射耗时 " + str(t2 - t1), file=statics.f_cons)
+    print("获取head映射耗时 " + str(t2 - t1), file=statics.f_console)
 
     # 对照, 朴素的head获取方法
     __naive_get_head_map(l_in, l_out, node_set, heads, q_in, q_out)
@@ -35,7 +35,7 @@ def entrance(in_tree, out_tree, twigs, l_in, l_out, node_set, q_in, q_out, q_in_
     querybox_list = CQueue()
     querybox_list.put(common.QueryBox(0))
     print("查询内核启动...")
-    print("查询内核启动...", file=statics.f_cons)
+    print("查询内核启动...", file=statics.f_console)
     t3 = time.clock()  # timer
     while not querybox_list.is_empty():
         x_box = querybox_list.get()
@@ -44,7 +44,7 @@ def entrance(in_tree, out_tree, twigs, l_in, l_out, node_set, q_in, q_out, q_in_
             querybox_list.put(each)
     t4 = time.clock()  # timer
     print("查询内核运行耗时 " + str(t4 - t3))
-    print("查询内核运行耗时 " + str(t4 - t3), file=statics.f_cons)
+    print("查询内核运行耗时 " + str(t4 - t3), file=statics.f_console)
 
 
 def __get_head_map(in_tree, out_tree, heads, q_in, q_out, q_in_menu, q_out_menu):
@@ -72,7 +72,7 @@ def __get_head_map(in_tree, out_tree, heads, q_in, q_out, q_in_menu, q_out_menu)
 
 def __naive_get_head_map(l_in, l_out, node_set, heads, q_in, q_out):
     print("naive的head查询开始...")
-    print("naive的head查询开始...", file=statics.f_cons)
+    print("naive的head查询开始...", file=statics.f_console)
     t_st_naive = time.clock()
     n_head_map = {}
     for head in heads:
@@ -93,7 +93,7 @@ def __naive_get_head_map(l_in, l_out, node_set, heads, q_in, q_out):
                 n_head_map[head].add(node)
     t_en_naive = time.clock()
     print("naive的head查询运行耗时 " + str(t_en_naive - t_st_naive))
-    print("naive的head查询运行耗时 " + str(t_en_naive - t_st_naive), file=statics.f_cons)
+    print("naive的head查询运行耗时 " + str(t_en_naive - t_st_naive), file=statics.f_console)
 
 
 def __locate_node(head, q_edge, q_menu, tree):
@@ -108,7 +108,7 @@ def __locate_node(head, q_edge, q_menu, tree):
     result = __dfs_locate_node(x=tree, step=0, step_count=1, q_edge=q_edge, q_menu=q_menu, head=head)
 
     print("本次locate_dfs递归次数:" + str(statics.locate_dfs_recirsive_call))
-    print("本次locate_dfs递归次数:" + str(statics.locate_dfs_recirsive_call), file=statics.f_cons)
+    print("本次locate_dfs递归次数:" + str(statics.locate_dfs_recirsive_call), file=statics.f_console)
     statics.located_run_time += time.clock() - tt1
     if not result:
         return common.INVALID_CANDIDATE

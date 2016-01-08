@@ -22,9 +22,9 @@ def main():
         os.remove(common.ROOT_PATH + 'console.txt')
 
     fo = open(common.ROOT_PATH + 'answer.txt', 'a')
-    statics.f_cons = open(common.ROOT_PATH + 'console.txt', mode='a', encoding='utf-8')
+    statics.f_console = open(common.ROOT_PATH + 'console.txt', mode='a', encoding='utf-8')
     print("hello world!")
-    print("hello world!", file=statics.f_cons)
+    print("hello world!", file=statics.f_console)
     l_in, l_out, l_in_menu, l_out_menu, node_set, neighbor = file_loader.load_map()
     in_tree, out_tree = initiater.init_in_out_tree(l_in, l_out, l_in_menu, l_out_menu, node_set, neighbor)
     queries, q_in, q_out, q_in_menu, q_out_menu = query_composer.compose_query()
@@ -41,12 +41,12 @@ def main():
         if result == common.INVALID_CANDIDATE:
             fo.write('no result\n')
             print('no result')
-            print('no result', file=statics.f_cons)
+            print('no result', file=statics.f_console)
         t2 = time.clock()  # timer
         print("查询" + str(i) + "输出结果耗时 " + str(statics.ans_io_time))
-        print("查询" + str(i) + "输出结果耗时 " + str(statics.ans_io_time), file=statics.f_cons)
+        print("查询" + str(i) + "输出结果耗时 " + str(statics.ans_io_time), file=statics.f_console)
         print("查询" + str(i) + "共计耗时 " + str(t2 - t1))
-        print("查询" + str(i) + "共计耗时 " + str(t2 - t1), file=statics.f_cons)
+        print("查询" + str(i) + "共计耗时 " + str(t2 - t1), file=statics.f_console)
         __debug_counter_output()
         fo.write('\n\n')
     fo.close()
@@ -60,9 +60,9 @@ def __init_statics():
 
 def __debug_counter_output():
     print("__locate_node调用次数: " + str(statics.locate_called_time))
-    print("__locate_node调用次数: " + str(statics.locate_called_time), file=statics.f_cons)
+    print("__locate_node调用次数: " + str(statics.locate_called_time), file=statics.f_console)
     print("__locate_node调用耗时: " + str(statics.located_run_time))
-    print("__locate_node调用耗时: " + str(statics.located_run_time), file=statics.f_cons)
+    print("__locate_node调用耗时: " + str(statics.located_run_time), file=statics.f_console)
 
 
 def __debug_counter_reset():

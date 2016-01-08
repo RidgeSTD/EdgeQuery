@@ -9,7 +9,7 @@ __author__ = 'alex'
 
 def compose_query(file_name=None):
     print("开始加载查询文件...")
-    print("开始加载查询文件...", file=statics.f_cons)
+    print("开始加载查询文件...", file=statics.f_console)
     t1 = time.clock()  # timer
 
     if file_name is None:
@@ -80,7 +80,7 @@ def compose_query(file_name=None):
             queries[q_counter].append(m_twig)
         t4 = time.clock()  # timer
         print('分割第' + str(len(queries)) + " 个查询耗时 " + str(t4 - t3))
-        print('分割第' + str(len(queries)) + " 个查询耗时 " + str(t4 - t3), file=statics.f_cons)
+        print('分割第' + str(len(queries)) + " 个查询耗时 " + str(t4 - t3), file=statics.f_console)
 
         t5 = time.clock()  # timer
         q_in_menu.append({})
@@ -112,11 +112,11 @@ def compose_query(file_name=None):
             q_out_menu[q_counter][node].sort(key=lambda x: x[0])
         t6 = time.clock()  # timer
         print("统计查询信息耗时 " + str(t6 - t5))
-        print("统计查询信息耗时 " + str(t6 - t5), file=statics.f_cons)
+        print("统计查询信息耗时 " + str(t6 - t5), file=statics.f_console)
 
         t2 = time.clock()  # timer
         print("加载查询共耗时 " + str(t2 - t1))
-        print("加载查询共耗时 " + str(t2 - t1), file=statics.f_cons)
+        print("加载查询共耗时 " + str(t2 - t1), file=statics.f_console)
 
     q_file.close()
 

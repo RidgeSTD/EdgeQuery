@@ -1,6 +1,6 @@
 ans_io_time = 0.0
 
-f_cons = None
+f_console = None
 
 
 fade_factor_pow = []

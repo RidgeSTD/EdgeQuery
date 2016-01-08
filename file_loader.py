@@ -15,7 +15,7 @@ def load_map():
     NOTE! The initialization must be done outside the function
     """
     print("开始加载文件...")
-    print("开始加载文件...", file=statics.f_cons)
+    print("开始加载文件...", file=statics.f_console)
     t_start_load_file = time.clock()  # timer
     l_in = {}
     l_out = {}
@@ -63,19 +63,19 @@ def load_map():
     f.close()
     t_end_load_file = time.clock()  # timer
     print("结束加载文件...")
-    print("结束加载文件...", file=statics.f_cons)
+    print("结束加载文件...", file=statics.f_console)
     print('加载文件耗时 ' + str(t_end_load_file - t_start_load_file))
-    print('加载文件耗时 ' + str(t_end_load_file - t_start_load_file), file=statics.f_cons)
+    print('加载文件耗时 ' + str(t_end_load_file - t_start_load_file), file=statics.f_console)
 
     t_start_sort_raw_data = time.clock()  # timer
     __inner_sort(l_in, l_in_menu)
     __inner_sort(l_out, l_out_menu)
     t_end_sort_raw_data = time.clock()  # timer
     print("原始数据内部排序耗时 " + str(t_end_sort_raw_data - t_start_sort_raw_data))
-    print("原始数据内部排序耗时 " + str(t_end_sort_raw_data - t_start_sort_raw_data), file=statics.f_cons)
+    print("原始数据内部排序耗时 " + str(t_end_sort_raw_data - t_start_sort_raw_data), file=statics.f_console)
 
     print("开始统计邻居信息")
-    print("开始统计邻居信息", file=statics.f_cons)
+    print("开始统计邻居信息", file=statics.f_console)
     t_start_neighbor = time.clock()  # timer
     # 统计邻居节点信息
     neighbor = {}
@@ -109,7 +109,7 @@ def load_map():
     # 先不统计出度
     t_end_neighbor = time.clock()  # timer
     print("统计邻居信息耗时 " + str(t_end_neighbor - t_start_neighbor))
-    print("统计邻居信息耗时 " + str(t_end_neighbor - t_start_neighbor), file=statics.f_cons)
+    print("统计邻居信息耗时 " + str(t_end_neighbor - t_start_neighbor), file=statics.f_console)
 
     return l_in, l_out, l_in_menu, l_out_menu, node_set, neighbor
 
